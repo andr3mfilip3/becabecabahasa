@@ -969,7 +969,7 @@ const IMAGE_MAP = {
 const EXAMPLE_MAP = {
   // Greetings
   'Halo':                'Halo, apa kabar?',
-  'Olá':                 'Olá, como estás?',
+  'Olá':                 'Olá, como estás amigo?',
   'Bonjour':             'Bonjour, comment allez-vous?',
   'Selamat pagi':        'Selamat pagi! Apa kabar hari ini?',
   'Bom dia':             'Bom dia! Como vai?',
