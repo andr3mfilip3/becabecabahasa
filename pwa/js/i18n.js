@@ -177,101 +177,13 @@ const I18N = {
     lessonBody:           'Tubuh',
     lessonBodySub:        'Kepala, Mata, Hidung…',
   },
-
-  'en-US': {
-    // Native lang selector
-    nativeLangTitle:   'What is your native language?',
-    nativeLangSub:     'Choose to continue',
-
-    // Language select
-    whatToLearn:       'What do you want to learn?',
-    chooseLang:        'Choose your target language',
-
-    // Section select
-    courses:           'Courses',
-    coursesSub:        'Interactive lessons',
-    resources:         'Resources',
-    resourcesSub:      'Study materials',
-
-    // Level select
-    lessonsLabel:      'lessons',
-    comingSoon:        'Coming soon',
-
-    // Lesson list
-    lessonWord:        'Lesson',
-    lessonsTitle:      'Lessons',
-
-    // Exercise questions
-    questionWord:      'How do you say "{word}" in {lang}?',
-    questionMeaning:   'What does "{target}" mean?',
-    questionType:      'Write "{word}" in {lang}',
-    questionListen:    'What does this mean?',
-    questionSpeak:     'Say this out loud',
-
-    // Example sentence
-    example:           'Example',
-
-    // Inputs
-    typeHere:          'Type here…',
-    check:             'Check',
-
-    // Listening
-    tapToHear:         'Tap to listen',
-    tapToReplay:       'Tap again to replay',
-
-    // Speaking
-    hearPronun:        '🔊 Hear pronunciation',
-    tapToSpeak:        'Tap to speak',
-    tapToStop:         'Tap to stop',
-    noSpeech:          'No speech detected. Try again or skip.',
-    speechUnsupported: 'Speech recognition is not available in this browser.',
-    skip:              'Skip',
-    markDone:          'Mark as done',
-    heard:             'Heard:',
-    tryLater:          'I\'ll try another time',
-
-    // Feedback
-    correct:           'Correct!',
-    incorrect:         'Incorrect',
-    answer:            'Answer:',
-    continue:          'Continue',
-
-    // Complete
-    greatJob:          'Great job!',
-    keepGoing:         'Keep practicing!',
-    outOf:             'of',
-    correctSuffix:     'correct',
-    backToLessons:     'Back to Lessons',
-
-    // Lesson titles
-    lessonGreetings:      'Greetings',
-    lessonGreetingsSub:   'Hello, Thank you, Goodbye…',
-    lessonNumbers:        'Numbers',
-    lessonNumbersSub:     '1 to 8',
-    lessonPhrases:        'Essential Phrases',
-    lessonPhrasesSub:     'Where?, How are you?, Sorry…',
-    lessonColors:         'Colors',
-    lessonColorsSub:      'Red, Blue, Green…',
-    lessonFood:           'Food & Drink',
-    lessonFoodSub:        'Rice, Chicken, Water…',
-    lessonFamily:         'Family',
-    lessonFamilySub:      'Father, Mother, Grandfather…',
-    lessonVerbs:          'Verbs',
-    lessonVerbsSub:       'Eat, Drink, Work…',
-    lessonPlaces:         'Places',
-    lessonPlacesSub:      'Market, School, Park…',
-    lessonQuestions:      'Question Words',
-    lessonQuestionsSub:   'Who, When, How…',
-    lessonBody:           'Body',
-    lessonBodySub:        'Head, Eye, Nose…',
-  },
 };
 
 // Display name of each target language, shown in the UI language.
 const LANG_NAMES = {
-  'pt-PT': { 'pt-PT': 'Português', 'id-ID': 'Bahasa Portugis', 'en-US': 'Portuguese' },
-  'id-ID': { 'pt-PT': 'Indonésio', 'id-ID': 'Bahasa Indonesia', 'en-US': 'Indonesian' },
-  'fr-FR': { 'pt-PT': 'Francês',   'id-ID': 'Bahasa Prancis',   'en-US': 'French'     },
+  'pt-PT': { 'pt-PT': 'Português', 'id-ID': 'Bahasa Portugis' },
+  'id-ID': { 'pt-PT': 'Indonésio',            'id-ID': 'Bahasa Indonesia' },
+  'fr-FR': { 'pt-PT': 'Francês',              'id-ID': 'Bahasa Prancis'  },
 };
 
 function t(key) {
