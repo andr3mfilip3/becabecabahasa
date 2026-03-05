@@ -1,12 +1,12 @@
 # Cloudflare Pages cache rules
 # Critical files — always fetch fresh so deployments are seen immediately
-/index.html
-  Cache-Control: no-cache, no-store, must-revalidate
-
 /manifest.json
   Cache-Control: no-cache, no-store, must-revalidate
 
 /sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+  
+/index.html
   Cache-Control: no-cache, no-store, must-revalidate
 
 # Static assets — 1 hour browser cache; SW invalidates them on new deploy anyway
