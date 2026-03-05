@@ -59,7 +59,7 @@ function renderNativeLangSelect() {
       <div>
         <h1 class="native-lang-title">
           Qual é a sua língua nativa?<br>
-          <span>Apa bahasa asli Anda?<br>What is your native language?</span>
+          <span>Apa bahasa asli Anda?</span>
         </h1>
       </div>
       <div class="native-lang-options">
@@ -70,10 +70,6 @@ function renderNativeLangSelect() {
         <button class="native-lang-btn" data-ui-lang="id-ID">
           <span class="nlb-flag">🇮🇩</span>
           <span>Bahasa Indonesia</span>
-        </button>
-        <button class="native-lang-btn" data-ui-lang="en-US">
-          <span class="nlb-flag">🇺🇸</span>
-          <span>English</span>
         </button>
       </div>
     </div>
