@@ -1,0 +1,23 @@
+# Cloudflare Pages cache rules
+# Critical files — always fetch fresh so deployments are seen immediately
+/index.html
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/manifest.json
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+
+# Static assets — 1 hour browser cache; SW invalidates them on new deploy anyway
+/css/*
+  Cache-Control: public, max-age=3600
+
+/js/*
+  Cache-Control: public, max-age=3600
+
+/icons/*
+  Cache-Control: public, max-age=3600
+
+/images/*
+  Cache-Control: public, max-age=3600
