@@ -1,4 +1,4 @@
-const CACHE = 'beca-beca-bahasa-v19';
+const CACHE = 'beca-beca-bahasa-v22';
 const ASSETS = [
   '.',
   'index.html',
