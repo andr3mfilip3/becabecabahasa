@@ -1,4 +1,4 @@
-const CACHE = 'beca-beca-bahasa-v25';
+const CACHE = 'beca-beca-bahasa-__BUILD_VERSION__';
 const ASSETS = [
   '.',
   'index.html',
