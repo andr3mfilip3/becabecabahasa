@@ -86,6 +86,8 @@ const I18N = {
     lessonPlacesSub:      'Mercado, Escola, Parque…',
     lessonQuestions:      'Palavras Interrogativas',
     lessonQuestionsSub:   'Quem, Quando, Como…',
+    lessonBody:           'Corpo',
+    lessonBodySub:        'Cabeça, Olho, Nariz…',
   },
 
   'id-ID': {
@@ -172,6 +174,8 @@ const I18N = {
     lessonPlacesSub:      'Pasar, Sekolah, Kantor…',
     lessonQuestions:      'Kata Tanya',
     lessonQuestionsSub:   'Siapa, Kapan, Bagaimana…',
+    lessonBody:           'Tubuh',
+    lessonBodySub:        'Kepala, Mata, Hidung…',
   },
 };
 

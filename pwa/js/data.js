@@ -87,8 +87,7 @@ const LESSONS = {
   'pt-PT': {
     'ACESSO': [
     {
-      id: 'pt-fundamentals', title: 'Fundamentals',
-      subtitle: 'Saudações, Números, Família…',
+      id: 'pt-greetings', title: 'lessonGreetings', subtitle: 'lessonGreetingsSub',
       exercises: [
         mc('Olá',        'Olá',        'Halo',             ['Olá', 'Obrigado', 'Sim', 'Adeus']),
         li('Bom dia',    'Bom dia',    'Selamat pagi',
@@ -104,6 +103,11 @@ const LESSONS = {
            ['Selamat pagi', 'Selamat sore', 'Selamat malam', 'Apa kabar?']),
         ta('Por favor',  'Por favor',  'Tolong'),
         sp('Com licença','Com licença','Permisi'),
+      ],
+    },
+    {
+      id: 'pt-numbers', title: 'lessonNumbers', subtitle: 'lessonNumbersSub',
+      exercises: [
         mc('Um',    'Um',    'Satu',    ['Um', 'Dois', 'Três', 'Quatro']),
         li('Dois',  'Dois',  'Dua',
            ['Um', 'Dois', 'Três', 'Quatro'],
@@ -118,6 +122,11 @@ const LESSONS = {
            ['Empat', 'Lima', 'Enam', 'Tujuh']),
         ta('Sete',  'Sete',  'Tujuh'),
         sp('Oito',  'Oito',  'Delapan'),
+      ],
+    },
+    {
+      id: 'pt-phrases', title: 'lessonPhrases', subtitle: 'lessonPhrasesSub',
+      exercises: [
         mc('Onde fica…?',    'Onde fica…?',   'Di mana…?',
            ['Onde fica…?', 'Quanto custa?', 'Como se chama?', 'Tudo bem?']),
         li('Tudo bem?',      'Como vai?',     'Apa kabar?',
@@ -128,6 +137,11 @@ const LESSONS = {
         mcM('Não percebo',   'Não percebo',   'Saya tidak mengerti',
            ['Não falo português', 'Não percebo', 'Estou perdido', 'Ajude-me'],
            ['Saya tidak bisa bahasa Portugis', 'Saya tidak mengerti', 'Saya tersesat', 'Tolong saya']),
+      ],
+    },
+    {
+      id: 'pt-family', title: 'lessonFamily', subtitle: 'lessonFamilySub',
+      exercises: [
         mc('Pai',     'Pai',     'Ayah',   ['Pai', 'Mãe', 'Irmão', 'Filho']),
         li('Mãe',     'Mãe',     'Ibu',
            ['Pai', 'Mãe', 'Avô', 'Avó'],
@@ -142,6 +156,11 @@ const LESSONS = {
         li('Marido',  'Marido',  'Suami',
            ['Esposa', 'Marido', 'Irmão', 'Pai'],
            ['Istri', 'Suami', 'Kakak', 'Ayah']),
+      ],
+    },
+    {
+      id: 'pt-body', title: 'lessonBody', subtitle: 'lessonBodySub',
+      exercises: [
         mc('Cabeça',  'Cabeça',  'Kepala', ['Cabeça', 'Braço', 'Pé', 'Mão']),
         li('Olho',    'Olho',    'Mata',
            ['Nariz', 'Olho', 'Boca', 'Orelha'],
@@ -156,6 +175,11 @@ const LESSONS = {
         li('Coração', 'Coração', 'Jantung',
            ['Pulmão', 'Fígado', 'Coração', 'Estômago'],
            ['Paru-paru', 'Hati', 'Jantung', 'Perut']),
+      ],
+    },
+    {
+      id: 'pt-food', title: 'lessonFood', subtitle: 'lessonFoodSub',
+      exercises: [
         mc('Pão',     'Pão',     'Roti',   ['Pão', 'Leite', 'Carne', 'Queijo']),
         li('Leite',   'Leite',   'Susu',
            ['Água', 'Leite', 'Sumo', 'Café'],
