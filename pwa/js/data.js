@@ -55,7 +55,8 @@ const sp = (target, ptTrans, idTrans) => ({
 // ── Levels ────────────────────────────────────────────────
 const LEVELS = {
   'pt-PT': [
-    { id: 'CIPLE',   cefr: 'A1 & A2' },
+    { id: 'ACESSO',   cefr: 'A1' },
+    { id: 'CIPLE',   cefr: 'A2' },
     { id: 'DEPLE',   cefr: 'B1' },
     { id: 'DIPLE',   cefr: 'B2' },
     { id: 'DAPLE',   cefr: 'C1' },
@@ -84,7 +85,7 @@ const LESSONS = {
 
   // ── Portuguese ─────────────────────────────
   'pt-PT': {
-    'CIPLE': [
+    'ACESSO': [
     {
       id: 'pt-fundamentals', title: 'Fundamentals',
       subtitle: 'Saudações, Números, Família…',
@@ -172,6 +173,7 @@ const LESSONS = {
       ],
     },
     ],
+	'CIPLE': [],
     'DEPLE': [],
     'DIPLE': [],
     'DAPLE': [],
