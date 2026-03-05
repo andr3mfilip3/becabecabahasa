@@ -62,7 +62,7 @@ const I18N = {
 
     // Complete
     greatJob:          'Ótimo trabalho!',
-    keepGoing:         'Continue praticando!',
+    keepGoing:         'Continue a praticar!',
     outOf:             'de',
     correctSuffix:     'corretas',
     backToLessons:     'Voltar às Lições',
