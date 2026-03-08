@@ -90,7 +90,11 @@ const I18N = {
     lessonBodySub:        'Cabeça, Olho, Nariz…',
     lessonWordMatching:    'Correspondência de Palavras',
     lessonWordMatchingSub: 'Escolha a palavra certa…',
+    lessonTrueFalse:       'Verdadeiro ou Falso',
+    lessonTrueFalseSub:    'Lê e responde V ou F…',
     tutExample:            'Exemplo',
+    trueLabel:             'Verdadeiro',
+    falseLabel:            'Falso',
   },
 
   'id-ID': {
@@ -181,7 +185,11 @@ const I18N = {
     lessonBodySub:        'Kepala, Mata, Hidung…',
     lessonWordMatching:    'Pencocokan Kata',
     lessonWordMatchingSub: 'Pilih kata yang tepat…',
+    lessonTrueFalse:       'Benar atau Salah',
+    lessonTrueFalseSub:    'Baca dan jawab B atau S…',
     tutExample:            'Contoh',
+    trueLabel:             'Benar',
+    falseLabel:            'Salah',
   },
 };
 

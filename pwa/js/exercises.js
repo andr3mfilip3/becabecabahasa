@@ -9,19 +9,23 @@ function renderExercise(exercise) {
     case 'listening':       return renderListening(exercise);
     case 'speaking':        return renderSpeaking(exercise);
     case 'tutorial':        return renderTutorial(exercise);
+    case 'tutorial-read':   return renderTutorialRead(exercise);
     case 'word-match':      return renderWM(exercise);
+    case 'true-false':      return renderTF(exercise);
     default: return '';
   }
 }
 
 function setupExerciseListeners(exercise, onAnswer) {
   switch (exercise.type) {
-    case 'multiple-choice': setupMC(exercise, onAnswer);        break;
-    case 'type-answer':     setupTA(exercise, onAnswer);        break;
-    case 'listening':       setupListening(exercise, onAnswer); break;
-    case 'speaking':        setupSpeaking(exercise, onAnswer);  break;
-    case 'tutorial':        setupTutorial(exercise, onAnswer);  break;
-    case 'word-match':      setupWM(exercise, onAnswer);        break;
+    case 'multiple-choice': setupMC(exercise, onAnswer);           break;
+    case 'type-answer':     setupTA(exercise, onAnswer);           break;
+    case 'listening':       setupListening(exercise, onAnswer);    break;
+    case 'speaking':        setupSpeaking(exercise, onAnswer);     break;
+    case 'tutorial':        setupTutorial(exercise, onAnswer);     break;
+    case 'tutorial-read':   setupTutorialRead(exercise, onAnswer); break;
+    case 'word-match':      setupWM(exercise, onAnswer);           break;
+    case 'true-false':      setupTF(exercise, onAnswer);           break;
   }
 }
 
@@ -338,6 +342,84 @@ function setupWM(ex, onAnswer) {
       onAnswer(isRight, ex.answer);
     });
   });
+}
+
+// ── Tutorial Read ─────────────────────────────────────────
+
+function renderTutorialRead(ex) {
+  return `
+    <p class="tut-instruction">${esc(ex.instruction)}</p>
+    <div class="tut-reading">
+      <p>${esc(ex.text)}</p>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn-continue" id="btn-tut-read">${esc(t('continue'))}</button>
+  `;
+}
+
+function setupTutorialRead(ex, onAnswer) {
+  const btn = document.getElementById('btn-tut-read');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    if (!state.scored[state.exerciseIndex]) {
+      state.score += 1;
+      state.scored[state.exerciseIndex] = true;
+    }
+    advanceExercise();
+  });
+}
+
+// ── True / False ──────────────────────────────────────────
+
+function renderTF(ex) {
+  const alreadyAnswered = !!state.scored[state.exerciseIndex];
+  const items = ex.subQuestions.map(sq => `
+    <div class="tf-item" data-id="${esc(sq.id)}">
+      <p class="tf-sentence">${esc(sq.id)}) ${esc(sq.sentence)}</p>
+      <div class="tf-btns">
+        <button class="tf-btn" data-answer="true"${alreadyAnswered ? ' disabled' : ''}>${esc(t('trueLabel'))}</button>
+        <button class="tf-btn" data-answer="false"${alreadyAnswered ? ' disabled' : ''}>${esc(t('falseLabel'))}</button>
+      </div>
+    </div>
+  `).join('');
+  return `
+    <div class="tf-list">${items}</div>
+    <div class="spacer"></div>
+    ${alreadyAnswered ? `<button class="btn-continue" id="btn-continue">${esc(t('continue'))}</button>` : ''}
+  `;
+}
+
+function setupTF(ex, onAnswer) {
+  if (state.scored[state.exerciseIndex]) return; // attachListeners handles btn-continue
+  const answers = {};
+  document.querySelectorAll('.tf-item').forEach(item => {
+    const id = item.dataset.id;
+    item.querySelectorAll('.tf-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        item.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        answers[id] = btn.dataset.answer;
+        if (Object.keys(answers).length === ex.subQuestions.length) {
+          revealTF(ex, answers, onAnswer);
+        }
+      });
+    });
+  });
+}
+
+function revealTF(ex, answers, onAnswer) {
+  let allCorrect = true;
+  ex.subQuestions.forEach(sq => {
+    const item = document.querySelector(`.tf-item[data-id="${sq.id}"]`);
+    const userAnswer = answers[sq.id];
+    if (userAnswer !== sq.answer) allCorrect = false;
+    item.querySelectorAll('.tf-btn').forEach(btn => {
+      btn.disabled = true;
+      if (btn.dataset.answer === sq.answer)                             btn.classList.add('correct');
+      else if (btn.dataset.answer === userAnswer && userAnswer !== sq.answer) btn.classList.add('wrong');
+    });
+  });
+  onAnswer(allCorrect, null);
 }
 
 // ── Utility ───────────────────────────────────────────────
