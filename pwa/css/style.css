@@ -769,7 +769,8 @@ body {
   transition: opacity .15s;
 }
 
-.btn-continue:hover { opacity: .9; }
+.btn-continue         { background: var(--blue); }
+.btn-continue:hover   { opacity: .9; }
 .feedback-bar.correct .btn-continue { background: var(--green); }
 .feedback-bar.wrong   .btn-continue { background: var(--red);   }
 

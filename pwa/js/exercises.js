@@ -272,7 +272,8 @@ function setupSpeaking(ex, onAnswer) {
 // ── Tutorial ──────────────────────────────────────────────
 
 function renderTutorial(ex) {
-  const instruction = ex.instruction[state.uiLang] || ex.instruction['pt-PT'];
+  const instruction     = ex.instruction[state.uiLang] || ex.instruction['pt-PT'];
+  const alreadyAnswered = !!state.scored[state.exerciseIndex];
   return `
     <p class="tut-instruction">${esc(instruction)}</p>
     <div class="tut-example">
@@ -281,12 +282,14 @@ function renderTutorial(ex) {
     </div>
     <div class="spacer"></div>
     <div class="options">
-      <button class="opt-btn" data-opt="${esc(ex.target)}">${esc(ex.target)}</button>
+      <button class="opt-btn" data-opt="${esc(ex.target)}"${alreadyAnswered ? ' disabled' : ''}>${esc(ex.target)}</button>
     </div>
+    ${alreadyAnswered ? `<button class="btn-continue" id="btn-continue">${esc(t('continue'))}</button>` : ''}
   `;
 }
 
 function setupTutorial(ex, onAnswer) {
+  if (state.scored[state.exerciseIndex]) return; // already answered — attachListeners handles btn-continue
   document.querySelectorAll('.opt-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.opt-btn').forEach(b => {
@@ -301,10 +304,12 @@ function setupTutorial(ex, onAnswer) {
 // ── Word Match ────────────────────────────────────────────
 
 function renderWM(ex) {
-  const used = state.usedAnswers || [];
+  const used            = state.usedAnswers || [];
+  const alreadyAnswered = !!state.scored[state.exerciseIndex];
   const opts = ex.wordBank.map(word => {
-    const isUsed = used.includes(word);
-    return `<button class="opt-btn${isUsed ? ' used' : ''}" data-opt="${esc(word)}"${isUsed ? ' disabled' : ''}>${esc(word)}</button>`;
+    const isUsed   = used.includes(word);
+    const disabled = alreadyAnswered || isUsed;
+    return `<button class="opt-btn${isUsed ? ' used' : ''}" data-opt="${esc(word)}"${disabled ? ' disabled' : ''}>${esc(word)}</button>`;
   }).join('');
   return `
     <div class="tut-example">
@@ -314,10 +319,12 @@ function renderWM(ex) {
     <div class="options options-grid">
       ${opts}
     </div>
+    ${alreadyAnswered ? `<button class="btn-continue" id="btn-continue">${esc(t('continue'))}</button>` : ''}
   `;
 }
 
 function setupWM(ex, onAnswer) {
+  if (state.scored[state.exerciseIndex]) return; // already answered — attachListeners handles btn-continue
   document.querySelectorAll('.opt-btn:not([disabled])').forEach(btn => {
     btn.addEventListener('click', () => {
       const chosen = btn.dataset.opt;
