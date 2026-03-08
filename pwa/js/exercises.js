@@ -380,9 +380,9 @@ function renderTF(ex) {
     </div>
     <p class="tf-question">${esc(ex.sentence)}</p>
     <div class="spacer"></div>
-    <div class="options">
-      <button class="opt-btn" data-answer="true"${alreadyAnswered ? ' disabled' : ''}>${esc(t('trueLabel'))}</button>
-      <button class="opt-btn" data-answer="false"${alreadyAnswered ? ' disabled' : ''}>${esc(t('falseLabel'))}</button>
+    <div class="options options-grid">
+      <button class="opt-btn${alreadyAnswered && ex.answer === 'true'  ? ' used' : ''}" data-answer="true"${alreadyAnswered ? ' disabled' : ''}>${esc(t('trueLabel'))}</button>
+      <button class="opt-btn${alreadyAnswered && ex.answer === 'false' ? ' used' : ''}" data-answer="false"${alreadyAnswered ? ' disabled' : ''}>${esc(t('falseLabel'))}</button>
     </div>
     ${alreadyAnswered ? `<button class="btn-continue" id="btn-continue">${esc(t('continue'))}</button>` : ''}
   `;
