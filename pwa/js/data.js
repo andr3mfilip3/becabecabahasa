@@ -343,12 +343,6 @@ const LESSONS = {
            'casaco',
            ['chapéu', 'cachecol', 'casaco', 'camisola', 'guarda-chuva', 'mochila', 'meias', 'chinelos'],
            'casaco', 'jaket'),
-        mcI(
-          'Escolhe o título mais adequado para o texto.',
-          'Pilih judul yang paling tepat untuk teks ini.',
-          ['A escola da Ana', 'Uma manhã preguiçosa', 'O verão da Ana'],
-          1
-        ),
       ],
     },
     (() => {
@@ -363,6 +357,12 @@ const LESSONS = {
           tf('O pai vai sempre chamar a Ana ao seu quarto.',         'true',  _t),
           tf('A Ana nunca se levanta de manhã.',                     'false', _t),
           tf('Neste dia, a Ana conseguiu levantar-se facilmente.',   'false', _t),
+          mcI(
+            'Escolhe o título mais adequado para o texto.',
+            'Pilih judul yang paling tepat untuk teks ini.',
+            ['A escola da Ana', 'Uma manhã preguiçosa', 'O verão da Ana'],
+            1
+          ),
         ],
       };
     })(),
