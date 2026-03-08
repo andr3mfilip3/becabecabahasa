@@ -373,53 +373,35 @@ function setupTutorialRead(ex, onAnswer) {
 
 function renderTF(ex) {
   const alreadyAnswered = !!state.scored[state.exerciseIndex];
-  const items = ex.subQuestions.map(sq => `
-    <div class="tf-item" data-id="${esc(sq.id)}">
-      <p class="tf-sentence">${esc(sq.id)}) ${esc(sq.sentence)}</p>
-      <div class="tf-btns">
-        <button class="tf-btn" data-answer="true"${alreadyAnswered ? ' disabled' : ''}>${esc(t('trueLabel'))}</button>
-        <button class="tf-btn" data-answer="false"${alreadyAnswered ? ' disabled' : ''}>${esc(t('falseLabel'))}</button>
-      </div>
-    </div>
-  `).join('');
+  const correctLabel = ex.answer === 'true' ? t('trueLabel') : t('falseLabel');
   return `
-    <div class="tf-list">${items}</div>
-    <div class="spacer"></div>
+    <div class="tut-reading">
+      <p>${esc(ex.text)}</p>
+    </div>
+    <p class="ex-question">${esc(ex.sentence)}</p>
+    <div class="options">
+      <button class="opt-btn" data-answer="true"${alreadyAnswered ? ' disabled' : ''}>${esc(t('trueLabel'))}</button>
+      <button class="opt-btn" data-answer="false"${alreadyAnswered ? ' disabled' : ''}>${esc(t('falseLabel'))}</button>
+    </div>
     ${alreadyAnswered ? `<button class="btn-continue" id="btn-continue">${esc(t('continue'))}</button>` : ''}
   `;
 }
 
 function setupTF(ex, onAnswer) {
   if (state.scored[state.exerciseIndex]) return; // attachListeners handles btn-continue
-  const answers = {};
-  document.querySelectorAll('.tf-item').forEach(item => {
-    const id = item.dataset.id;
-    item.querySelectorAll('.tf-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        item.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        answers[id] = btn.dataset.answer;
-        if (Object.keys(answers).length === ex.subQuestions.length) {
-          revealTF(ex, answers, onAnswer);
-        }
+  document.querySelectorAll('.opt-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const chosen  = btn.dataset.answer;
+      const isRight = chosen === ex.answer;
+      document.querySelectorAll('.opt-btn').forEach(b => {
+        b.disabled = true;
+        if (b.dataset.answer === ex.answer)            b.classList.add('correct');
+        else if (b === btn && !isRight)                b.classList.add('wrong');
       });
+      const correctLabel = ex.answer === 'true' ? t('trueLabel') : t('falseLabel');
+      onAnswer(isRight, correctLabel);
     });
   });
-}
-
-function revealTF(ex, answers, onAnswer) {
-  let allCorrect = true;
-  ex.subQuestions.forEach(sq => {
-    const item = document.querySelector(`.tf-item[data-id="${sq.id}"]`);
-    const userAnswer = answers[sq.id];
-    if (userAnswer !== sq.answer) allCorrect = false;
-    item.querySelectorAll('.tf-btn').forEach(btn => {
-      btn.disabled = true;
-      if (btn.dataset.answer === sq.answer)                             btn.classList.add('correct');
-      else if (btn.dataset.answer === userAnswer && userAnswer !== sq.answer) btn.classList.add('wrong');
-    });
-  });
-  onAnswer(allCorrect, null);
 }
 
 // ── Utility ───────────────────────────────────────────────

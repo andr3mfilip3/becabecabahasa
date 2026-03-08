@@ -75,9 +75,11 @@ const tutRead = (instruction, text) => ({
   text,
 });
 
-const tf = (subQuestions) => ({
+const tf = (sentence, answer, text) => ({
   type: 'true-false',
-  subQuestions,
+  sentence,
+  answer,  // 'true' | 'false'
+  text,
 });
 
 // ── Levels ────────────────────────────────────────────────
@@ -329,23 +331,21 @@ const LESSONS = {
            'casaco', 'jaket'),
       ],
     },
-    {
-      id: 'pt-true-false',
-      title: 'lessonTrueFalse',
-      subtitle: 'lessonTrueFalseSub',
-      exercises: [
-        tutRead(
-          'Lê o texto e responde às questões.',
-          'Na segunda semana de setembro, logo após o verão, o meu pai foi ao meu quarto chamar-me para tomar o pequeno-almoço, como faz sempre. – Bom dia, Ana! Levanta-te, o pequeno-almoço está pronto – disse ele. Eu abri os olhos com dificuldade e respondi com pouca energia: – Já vou… O meu pai abriu a janela e, como eu continuava deitada, voltou a chamar-me: – Ana! Não te atrases, tens escola! Depois do meu pai sair do quarto, aconteceu algo estranho: eu, que, até àquele dia, me levantava facilmente quando ouvia os pássaros a cantar, não conseguia tirar as pernas da cama!',
-        ),
-        tf([
-          { id: 'a', sentence: 'O verão já acabou.', answer: 'true' },
-          { id: 'b', sentence: 'O pai vai sempre chamar a Ana ao seu quarto.', answer: 'true' },
-          { id: 'c', sentence: 'A Ana nunca se levanta de manhã.', answer: 'false' },
-          { id: 'd', sentence: 'Neste dia, a Ana conseguiu levantar-se facilmente.', answer: 'false' },
-        ]),
-      ],
-    },
+    (() => {
+      const _t = 'Na segunda semana de setembro, logo após o verão, o meu pai foi ao meu quarto chamar-me para tomar o pequeno-almoço, como faz sempre. – Bom dia, Ana! Levanta-te, o pequeno-almoço está pronto – disse ele. Eu abri os olhos com dificuldade e respondi com pouca energia: – Já vou… O meu pai abriu a janela e, como eu continuava deitada, voltou a chamar-me: – Ana! Não te atrases, tens escola! Depois do meu pai sair do quarto, aconteceu algo estranho: eu, que, até àquele dia, me levantava facilmente quando ouvia os pássaros a cantar, não conseguia tirar as pernas da cama!';
+      return {
+        id: 'pt-true-false',
+        title: 'lessonTrueFalse',
+        subtitle: 'lessonTrueFalseSub',
+        exercises: [
+          tutRead('Lê o texto e responde às questões.', _t),
+          tf('O verão já acabou.',                                   'true',  _t),
+          tf('O pai vai sempre chamar a Ana ao seu quarto.',         'true',  _t),
+          tf('A Ana nunca se levanta de manhã.',                     'false', _t),
+          tf('Neste dia, a Ana conseguiu levantar-se facilmente.',   'false', _t),
+        ],
+      };
+    })(),
     ],
 	'CIPLE': [],
     'DEPLE': [],
