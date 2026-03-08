@@ -18,13 +18,13 @@ pwa/
 ├── sw.js               # Service Worker with __BUILD_VERSION__ placeholder
 ├── css/style.css       # All styles; CSS vars for colors/radius/shadow
 ├── js/
-│   ├── data.js         # LANGUAGES, LEVELS, LESSONS, IMAGE_MAP, EXAMPLE_MAP, RESOURCES (~1200 lines)
+│   ├── data.js         # LANGUAGES, LEVELS, LESSONS, IMAGE_MAP, EXAMPLE_MAP, RESOURCES
 │   ├── i18n.js         # I18N object + LANG_NAMES; t(key) and langName(id) helpers
 │   ├── speech.js       # speak(), startRecognition(), stopRecognition(), checkPronunciation()
-│   ├── exercises.js    # renderExercise(), setupExerciseListeners(), esc() utility
+│   ├── exercises.js    # renderExercise(), setupExerciseListeners(), per-type render/setup, esc()
 │   └── app.js          # state, render(), navigate(), screen renderers, attachListeners()
 ├── icons/icon.svg
-└── images/             # See image list below
+└── images/             # See IMAGE_MAP section below
 build.js                # Stamps sw.js version (runs during Cloudflare deploy)
 ```
 
@@ -38,7 +38,8 @@ const state = {
   lessonIndex: 0,
   exerciseIndex: 0,
   score: 0,
-  scored: [],                     // array tracking which exercises were scored
+  scored: [],        // indexed by exerciseIndex; true when exercise has been answered
+  usedAnswers: [],   // word-match answers used so far this lesson (reset on lesson start)
   answered: false,
   isCorrect: null,
   correctAnswer: null,
@@ -71,19 +72,55 @@ li(target, ptTrans, idTrans, ptOptions[4], idOptions[4])
 // Speaking: auto-plays TTS, user speaks via mic — fuzzy match via checkPronunciation()
 sp(target, ptTrans, idTrans)
 
-// Tutorial: shows translated instruction + target-language example, one answer option
-// instruction is translated (pt+id); exampleDesc is always in target language (plain string)
-// Always scores as correct — used as guided intro before real exercises
+// Tutorial: translated instruction box + target-language example box + one selectable option
+// instruction translated (pt+id); exampleDesc is always target-language (plain string)
+// Always scores as correct. Locks option + shows Continue when going back.
 tut(ptInstruction, idInstruction, exampleDesc, target, ptTrans, idTrans)
+
+// Tutorial Read: translated instruction + scrollable reading passage + always-visible Continue button
+// No answer interaction. Marks scored + advances on Continue. No feedback bar.
+tutRead(ptInstruction, idInstruction, text)
+
+// Word Match: sentence prompt + 8-option 2-column word bank
+// answer is locked in state.usedAnswers after each question (correct or wrong pick).
+// Locks all + shows Continue when going back (state.scored check).
+wm(sentence, answer, wordBank[8], ptTrans, idTrans)
+
+// True/False: reading passage + one true/false question per exercise
+// Uses opt-btn buttons in 2-column grid. data-answer="true"|"false" attribute.
+// Locks correct answer with .used class + shows Continue when going back.
+tf(sentence, answer, text)   // answer: 'true' | 'false'
 ```
 
-**Correct answer logic (exercises.js `getCorrectAnswer`):**
-- `mc` with `questionType: 'word'` → `ex.target`
-- `mc` with `questionType: 'meaning'` → `ex.translation[uiLang]`
+**Correct answer logic (`getCorrectAnswer` in exercises.js):**
+- `mc` `word` type → `ex.target`
+- `mc` `meaning` type → `ex.translation[uiLang]`
 - `ta` → `ex.target`
 - `li` → `ex.translation[uiLang]`
 - `sp` → always passes via "try later" or fuzzy match
-- `tutorial` → always passes (onAnswer(true))
+- `tutorial` → always passes (`onAnswer(true)`)
+- `tutorial-read` → always passes (direct `advanceExercise()`, no feedback bar)
+- `word-match` → `ex.answer`
+- `true-false` → `ex.answer` (`'true'` or `'false'`); correct label shown in feedback
+
+## Go-Back Locking Pattern
+
+All exercise types that support going back implement the same pattern:
+
+```js
+// In renderXxx:
+const alreadyAnswered = !!state.scored[state.exerciseIndex];
+// → disable all option buttons when alreadyAnswered
+// → render <button class="btn-continue" id="btn-continue"> when alreadyAnswered
+// → for wm: also applies .used class to previously-used answers
+// → for tf: also applies .used class to the correct answer button
+
+// In setupXxx:
+if (state.scored[state.exerciseIndex]) return;
+// attachListeners() in app.js wires #btn-continue → advanceExercise automatically
+```
+
+`tutorial-read` is always available (Continue always shown) — scoring guard is inside the click handler.
 
 ## Lesson Data Structure (data.js)
 
@@ -92,19 +129,46 @@ const LESSONS = {
   'pt-PT': {
     'ACESSO': [
       {
-        id: 'pt-greetings',          // unique string
-        title: 'lessonGreetings',    // i18n key
+        id: 'pt-greetings',           // unique kebab-case string
+        title: 'lessonGreetings',     // i18n key (or plain string)
         subtitle: 'lessonGreetingsSub',
-        exercises: [ mc(...), li(...), ta(...), sp(...), mcM(...), ... ]
+        // locked: true,              // optional — greyed out 🔒, not clickable
+        exercises: [ mc(...), li(...), ta(...), sp(...), mcM(...) ]
       },
       // more lessons...
+      {
+        id: 'pt-word-matching',
+        title: 'lessonWordMatching',
+        subtitle: 'lessonWordMatchingSub',
+        exercises: [
+          tut('Lê as frases...', 'Baca kalimat...', 'O que se usa para...', 'pasta', 'pasta', 'map'),
+          wm('sentence', 'answer', ['word1',...,'word8'], 'ptTrans', 'idTrans'),
+          // 4 more wm()...
+        ]
+      },
+      {
+        id: 'pt-true-false',
+        title: 'lessonTrueFalse',
+        subtitle: 'lessonTrueFalseSub',
+        exercises: [
+          tutRead('Lê o texto...', 'Baca teks...', readingText),
+          tf('sentence', 'true'|'false', readingText),
+          // 3 more tf()...
+        ]
+      },
     ],
     'CIPLE': [],   // EMPTY — A2
     // ...
   },
-  'id-ID': { ... },
-  'fr-FR': { ... },
 };
+```
+
+**Note on tutRead/tf with shared text:** Use an IIFE to avoid repeating the long string:
+```js
+(() => {
+  const _t = 'long reading text...';
+  return { id: '...', title: '...', subtitle: '...', exercises: [tutRead(..., _t), tf(..., _t), ...] };
+})(),
 ```
 
 ## Levels
@@ -117,23 +181,17 @@ const LESSONS = {
 **Level is "locked" (greyed out) if `LESSONS[lang][level].length === 0`.**
 
 ## Lesson Locking
-
-Individual lessons support a `locked: true` flag:
-- Locked lessons render greyed out with a 🔒 icon and "Em breve" / "Segera hadir" subtitle
-- They are not clickable (`attachListeners` uses `.lesson-card:not(.locked)[data-lesson]`)
-- Levels are locked when `LESSONS[lang][level].length === 0`
+- Individual lessons: add `locked: true` → greyed out with 🔒 icon and "Em breve"/"Segera hadir"
+- Not clickable — `attachListeners` uses `.lesson-card:not(.locked)[data-lesson]`
+- Levels locked when `LESSONS[lang][level].length === 0`
 
 ## Current Content Status
 | Language | Level | Status |
 |---|---|---|
-| pt-PT | ACESSO (A1) | ✅ 9 lessons (greetings, numbers, colors, food, family, body, verbs, places, questions, word-matching) |
+| pt-PT | ACESSO (A1) | ✅ 11 lessons: greetings, numbers, colors, food, family, body, verbs, places, questions, word-matching, true-false |
 | pt-PT | CIPLE–DUPLE (A2–C2) | ❌ All empty |
 | id-ID | BIPA 1 (A1) | ✅ 8 lessons |
-| id-ID | BIPA 2 (A2) | ⚠️ 1 lesson (daily life / time/connectors) |
-| id-ID | BIPA 3 (B1) | ⚠️ 1 lesson (weather & nature) |
-| id-ID | BIPA 4 (B2) | ⚠️ 1 lesson (society & opinion) |
-| id-ID | BIPA 5 (C1) | ⚠️ 1 lesson (academic & professional) |
-| id-ID | BIPA 6 (C2) | ⚠️ 1 lesson (formal & critical) |
+| id-ID | BIPA 2–6 (A2–C2) | ⚠️ 1 lesson each |
 | fr-FR | DELF A1 | ✅ 8 lessons (mirrors PT-A1 topics) |
 | fr-FR | DELF A2–DALF C2 | ❌ All empty |
 
@@ -141,102 +199,74 @@ Individual lessons support a `locked: true` flag:
 
 `t(key)` looks up `I18N[state.uiLang][key]`. UI languages: `pt-PT` and `id-ID` only.
 
-**Lesson title keys available:**
-`lessonGreetings`, `lessonGreetingsSub`, `lessonNumbers`, `lessonNumbersSub`, `lessonColors`, `lessonColorsSub`, `lessonFood`, `lessonFoodSub`, `lessonFamily`, `lessonFamilySub`, `lessonBody`, `lessonBodySub`, `lessonVerbs`, `lessonVerbsSub`, `lessonPlaces`, `lessonPlacesSub`, `lessonQuestions`, `lessonQuestionsSub`, `lessonPhrases`, `lessonPhrasesSub`, `lessonWordMatching`, `lessonWordMatchingSub`
+**All lesson title keys:**
+`lessonGreetings/Sub`, `lessonNumbers/Sub`, `lessonColors/Sub`, `lessonFood/Sub`, `lessonFamily/Sub`, `lessonBody/Sub`, `lessonVerbs/Sub`, `lessonPlaces/Sub`, `lessonQuestions/Sub`, `lessonPhrases/Sub`, `lessonWordMatching/Sub`, `lessonTrueFalse/Sub`
 
-**Other i18n keys added:**
-`tutExample` — "Exemplo" / "Contoh" (used in tutorial exercise label)
+**Exercise-specific keys:**
+- `tutExample` — "Exemplo" / "Contoh" (tutorial example label)
+- `trueLabel` — "Verdadeiro" / "Benar"
+- `falseLabel` — "Falso" / "Salah"
 
-**For new lesson topics** without an existing key: use a plain string for `title` and `subtitle` (the `t()` function returns the key itself if not found, so strings work fine).
+**Rule:** All new i18n keys must be added to **both** `I18N['pt-PT']` and `I18N['id-ID']`.
+
+**Plain strings work too:** `t()` returns the key itself if not found, so lesson titles/subtitles can be raw strings.
 
 ## IMAGE_MAP (data.js)
+Maps `ex.target` → image path. Shown on MC and TA exercises.
 
-Maps `ex.target` → image path. Image shown on MC and TA exercises.
-
-**Available images in `pwa/images/`:**
-- **Greetings:** hello.png, goodbye.png, sorry.png, please.png, where.png, "Thank You.png", "Good Morning.png", "Good Afternoon.png", "Good Night.png", "I don't understand.png"
-- **Numbers:** 1.png–10.png
-- **Family:** father.png, mother.png, grandpa.png, Granma.png, husband.png, wife.png, son.png, family.png, adik.png, "Older brother_sister (kakak).png"
-- **Colors:** red.png, blue.png, green.png, yellow.png, orange.png, white.png, black.png, Brown.png
-- **Body:** Head.png, Nose.png, Mouth.png, Hair.png, ear.png
-- **Food:** rice.png, chicken.png, fish.png, fruits.png, coffee.png, water.png, bread.png, eggs.png, meat.png
-- **Verbs:** Eat.png, Drink.png, Work.png, Study.png, Read.png, Write.png, Play.png, Buy.png, Go.png, Come.png, Live.png
-- **Places:** school.png, Market.png, Office.png, Park.png, Restaurant.png, Hospital.png, Church.png, Cinema.png, Library.png, Pharmacy.png, airport.png, theater.png, House.png
+**Categories:** greetings, numbers (1–10), family, colors, body parts, food/drink, verbs, places.
 
 ## EXAMPLE_MAP (data.js)
-
-Maps `ex.target` → example sentence shown in exercises. Use plain string for one sentence, or `{ 'pt-PT': '...', 'fr-FR': '...' }` when same spelling appears in multiple target languages (e.g., `'Café'`).
+Maps `ex.target` → example sentence shown in exercises.
+- Plain string: one language
+- Object `{ 'pt-PT': '...', 'fr-FR': '...' }`: same spelling in multiple target languages
 
 ## RESOURCES (data.js)
-
-Reference tables shown in the "Resources" section. Structure:
+Reference tables in the "Resources" section:
 ```js
-{
-  id: 'pt-vocab',
-  icon: '📖',
-  title: 'Vocabulário Essencial',
-  source: 'Source note',
-  sections: [
-    {
-      heading: 'Section Title',
-      cols: ['Col1', 'Col2', 'Col3'],   // optional table headers
-      rows: [['cell', 'cell', 'cell']], // table rows
-      notes: ['paragraph text'],        // optional paragraphs (no table)
-    }
-  ]
-}
+{ icon, title, source, sections: [{ heading, cols?, rows?, notes? }] }
 ```
-
-## How to Add New Lessons
-
-1. **Add to `LESSONS` in `data.js`** under the right language + level key:
-```js
-{
-  id: 'pt-clothing',           // unique, kebab-case
-  title: 'Roupa',              // plain string OR i18n key
-  subtitle: 'Camisa, Calças…', // plain string OR i18n key
-  exercises: [
-    mc('camisa', 'camisa', 'kemeja', ['camisa', 'calças', 'sapatos', 'chapéu']),
-    li('calças', 'calças', 'celana', ['camisa', 'calças', 'saia', 'casaco'], ['kemeja', 'celana', 'rok', 'jaket']),
-    ta('sapatos', 'sapatos', 'sepatu'),
-    mcM('chapéu', 'chapéu', 'topi', ['camisa', 'calças', 'chapéu', 'cinto'], ['kemeja', 'celana', 'topi', 'ikat pinggang']),
-    sp('casaco', 'casaco', 'jaket'),
-  ]
-}
-```
-
-2. **Optionally add to IMAGE_MAP** if you have an image:
-```js
-'camisa': 'images/shirt.png',
-```
-
-3. **Optionally add to EXAMPLE_MAP**:
-```js
-'camisa': 'Visto uma camisa branca para o trabalho.',
-```
-
-4. **For new i18n keys** (lesson title/subtitle), add to both `I18N['pt-PT']` and `I18N['id-ID']` in `i18n.js`.
 
 ## CSS Design Tokens (style.css)
 ```css
---green: #58CC02    /* primary CTA, correct */
---blue:  #1CB0F6    /* secondary, type input focus */
+--green: #58CC02    /* correct, primary CTA */
+--green-light: #e5f9c0
+--blue:  #1CB0F6    /* secondary, focus, standalone btn-continue */
+--blue-light: #d7f1fd
 --red:   #FF4B4B    /* wrong answer */
+--red-light: #ffe0e0
 --purple:#CE82FF    /* speaking screen */
 --yellow:#FFD900    /* XP pill */
+--gray-1: #afafaf   /* muted text */
+--gray-2: #e5e5e5   /* locked .opt-btn.used background, borders */
+--gray-3: #f7f7f7   /* default backgrounds */
 --radius: 16px
 ```
 
+**Key CSS classes:**
+- `.options` — flex column, gap 10px
+- `.options-grid` — 2-column CSS grid (used by word-match and true-false)
+- `.opt-btn` — full-width option button (white bg, gray border)
+- `.opt-btn.correct` — green highlight
+- `.opt-btn.wrong` — red highlight
+- `.opt-btn.used` — grey bg (#e5e5e5), grey text, no hover (locked used answer)
+- `.tut-instruction` — blue-light background instruction box
+- `.tut-example` — grey background example box (`.tut-example-label` + `.tut-example-desc`)
+- `.tut-reading` — grey background scrollable reading passage (max-height 45vh)
+- `.tf-question` — left-aligned, 1.1rem, font-weight 700 (TF question sentence)
+- `.btn-continue` — blue background by default; overridden green/red inside `.feedback-bar`
+- `.feedback-bar.correct/.wrong` — bottom bar with icon, label, continue button
+
 ## Speech (speech.js)
-- `speak(text, lang)` — uses Web Speech API TTS at rate 0.85; iOS workaround with 100ms delay
-- `startRecognition(lang, onResult, onEnd)` — speech-to-text; `onResult(heard)` called with transcript
-- `checkPronunciation(heard, target)` — fuzzy: passes if normalized strings match, or one includes the other
-- Speaking exercises have a "Try later" button that always passes (onAnswer(true))
+- `speak(text, lang)` — TTS at rate 0.85; iOS workaround with 100ms delay
+- `startRecognition(lang, onResult, onEnd)` — STT; `onResult(heard)` with transcript
+- `checkPronunciation(heard, target)` — fuzzy: passes if normalized strings match or one contains the other
+- Speaking exercises have a "Try later" button that always passes (`onAnswer(true)`)
 
 ## Service Worker & Deploy
 - `sw.js` uses `__BUILD_VERSION__` placeholder replaced by `build.js` at deploy time
-- Cache strategy: network-first for HTML navigation, stale-while-revalidate for CSS/JS/images
-- Images are NOT pre-cached in ASSETS list (they're fetched on demand and cached via stale-while-revalidate)
+- Cache strategy: network-first for HTML, stale-while-revalidate for CSS/JS/images
+- Images are NOT pre-cached (fetched on demand, cached via stale-while-revalidate)
 
 ## PT/ Folder (not yet integrated)
-`C:\Users\andre\Desktop\APP\PT\` contains official CAPLE exam JSON files (A1–C1). Types: `dialogue_completion`, `word_matching`, `reading_comprehension`, `gap_fill_verb`, `gap_fill_grammar`. These are source material, not integrated into the PWA.
+`C:\Users\andre\Desktop\APP\PT\` contains official CAPLE exam JSON files (A1–C1). Types: `dialogue_completion`, `word_matching`, `reading_comprehension`, `gap_fill_verb`, `gap_fill_grammar`. Source material only — not integrated into the PWA.
