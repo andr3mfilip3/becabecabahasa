@@ -33,6 +33,13 @@ const mcM = (target, ptTrans, idTrans, ptOpts, idOpts) => ({
   optionsByLang: { 'pt-PT': ptOpts, 'id-ID': idOpts },
 });
 
+const mcI = (ptInstruction, idInstruction, options, answerIndex) => ({
+  type: 'multiple-choice', questionType: 'instruction',
+  instruction: { 'pt-PT': ptInstruction, 'id-ID': idInstruction },
+  target: options[answerIndex],
+  options,
+});
+
 const ta = (target, ptTrans, idTrans) => ({
   type: 'type-answer',
   target,
@@ -336,6 +343,12 @@ const LESSONS = {
            'casaco',
            ['chapéu', 'cachecol', 'casaco', 'camisola', 'guarda-chuva', 'mochila', 'meias', 'chinelos'],
            'casaco', 'jaket'),
+        mcI(
+          'Escolhe o título mais adequado para o texto.',
+          'Pilih judul yang paling tepat untuk teks ini.',
+          ['A escola da Ana', 'Uma manhã preguiçosa', 'O verão da Ana'],
+          1
+        ),
       ],
     },
     (() => {

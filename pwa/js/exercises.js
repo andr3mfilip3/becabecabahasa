@@ -38,6 +38,8 @@ function getQuestion(ex) {
 
   switch (ex.type) {
     case 'multiple-choice':
+      if (ex.questionType === 'instruction')
+        return ex.instruction[uiLang] || ex.instruction['pt-PT'];
       return ex.questionType === 'word'
         ? t('questionWord').replace('{word}', trans).replace('{lang}', lName)
         : t('questionMeaning').replace('{target}', ex.target);
