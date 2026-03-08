@@ -268,8 +268,8 @@ const LESSONS = {
     },
     {
       id: 'pt-word-matching',
-      title: 'Correspondência de Palavras',
-      subtitle: 'Em breve…',
+      title: 'lessonWordMatching',
+      subtitle: '',
       locked: true,
       exercises: [],
     },
