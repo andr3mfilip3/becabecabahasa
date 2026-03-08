@@ -980,6 +980,21 @@ const IMAGE_MAP = {
   'Onde fica…?':          'images/where.png',
   'Di mana…?':            'images/where.png',
   'Où est…?':             'images/where.png',
+  // Question words
+  'quem':              'images/Who.png',           'siapa':       'images/Who.png',           'qui':               'images/Who.png',
+  'o quê':             'images/What.png',          'apa':         'images/What.png',          'quoi':              'images/What.png',
+  'quando':            'images/When.png',          'kapan':       'images/When.png',          'quand':             'images/When.png',
+  'como':              'images/How.png',           'bagaimana':   'images/How.png',           'comment':           'images/How.png',
+  'porquê':            'images/Why.png',           'mengapa':     'images/Why.png',           'pourquoi':          'images/Why.png',
+  'quanto':            'images/How much.png',      'berapa':      'images/How much.png',      'combien':           'images/How much.png',
+  'qual':              'images/Which one.png',     'yang mana':   'images/Which one.png',     'lequel':            'images/Which one.png',
+  'para onde':         'images/Where to.png',      'ke mana':     'images/Where to.png',      'vers où':           'images/Where to.png',
+  'de onde':           'images/Where from.png',    'dari mana':   'images/Where from.png',    "d'où":              'images/Where from.png',
+  'a que horas':       'images/What time.png',     'jam berapa':  'images/What time.png',     'à quelle heure':    'images/What time.png',
+  'quanto tempo':      'images/How long.png',      'berapa lama': 'images/How long.png',      'combien de temps':  'images/How long.png',
+  'Não entendo':       "images/I don't understand.png", 'Tidak mengerti': "images/I don't understand.png", 'Je ne comprends pas': "images/I don't understand.png",
+  // Lesson titles / reading
+  'Uma manhã preguiçosa': 'images/Wake up.png',
   // Numbers
   'Satu':    'images/1.png',  'Um':     'images/1.png',  'Un':    'images/1.png',
   'Dua':     'images/2.png',  'Dois':   'images/2.png',  'Deux':  'images/2.png',
