@@ -8,6 +8,7 @@ const state = {
   exerciseIndex: 0,
   score: 0,
   scored: [],        // tracks which exercise indices have been scored
+  usedAnswers: [],   // tracks word-match answers used so far in the lesson
   answered: false,
   isCorrect: null,
   correctAnswer: null,
@@ -388,7 +389,7 @@ function attachListeners() {
   // Lesson cards
   document.querySelectorAll('.lesson-card:not(.locked)[data-lesson]').forEach(card => {
     card.addEventListener('click', () => {
-      navigate('lesson', { lessonIndex: Number(card.dataset.lesson), exerciseIndex: 0, score: 0, scored: [] });
+      navigate('lesson', { lessonIndex: Number(card.dataset.lesson), exerciseIndex: 0, score: 0, scored: [], usedAnswers: [] });
     });
   });
 

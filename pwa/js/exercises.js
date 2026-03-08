@@ -9,6 +9,7 @@ function renderExercise(exercise) {
     case 'listening':       return renderListening(exercise);
     case 'speaking':        return renderSpeaking(exercise);
     case 'tutorial':        return renderTutorial(exercise);
+    case 'word-match':      return renderWM(exercise);
     default: return '';
   }
 }
@@ -20,6 +21,7 @@ function setupExerciseListeners(exercise, onAnswer) {
     case 'listening':       setupListening(exercise, onAnswer); break;
     case 'speaking':        setupSpeaking(exercise, onAnswer);  break;
     case 'tutorial':        setupTutorial(exercise, onAnswer);  break;
+    case 'word-match':      setupWM(exercise, onAnswer);        break;
   }
 }
 
@@ -292,6 +294,41 @@ function setupTutorial(ex, onAnswer) {
         if (b.dataset.opt === ex.target) b.classList.add('correct');
       });
       onAnswer(true, ex.target);
+    });
+  });
+}
+
+// ── Word Match ────────────────────────────────────────────
+
+function renderWM(ex) {
+  const used = state.usedAnswers || [];
+  const opts = ex.wordBank.map(word => {
+    const isUsed = used.includes(word);
+    return `<button class="opt-btn${isUsed ? ' used' : ''}" data-opt="${esc(word)}"${isUsed ? ' disabled' : ''}>${esc(word)}</button>`;
+  }).join('');
+  return `
+    <div class="tut-example">
+      <p class="tut-example-desc">${esc(ex.sentence)}</p>
+    </div>
+    <div class="spacer"></div>
+    <div class="options options-grid">
+      ${opts}
+    </div>
+  `;
+}
+
+function setupWM(ex, onAnswer) {
+  document.querySelectorAll('.opt-btn:not([disabled])').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const chosen = btn.dataset.opt;
+      const isRight = chosen === ex.answer;
+      document.querySelectorAll('.opt-btn').forEach(b => {
+        b.disabled = true;
+        if (b.dataset.opt === ex.answer) b.classList.add('correct');
+        else if (b === btn && !isRight)  b.classList.add('wrong');
+      });
+      if (isRight) state.usedAnswers.push(chosen);
+      onAnswer(isRight, ex.answer);
     });
   });
 }

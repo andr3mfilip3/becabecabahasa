@@ -52,6 +52,15 @@ const sp = (target, ptTrans, idTrans) => ({
   translation: { 'pt-PT': ptTrans, 'id-ID': idTrans },
 });
 
+const wm = (sentence, answer, wordBank, ptTrans, idTrans) => ({
+  type: 'word-match',
+  sentence,
+  answer,
+  wordBank,
+  target: answer,
+  translation: { 'pt-PT': ptTrans, 'id-ID': idTrans },
+});
+
 const tut = (ptInstruction, idInstruction, exampleDesc, target, ptTrans, idTrans) => ({
   type: 'tutorial',
   instruction: { 'pt-PT': ptInstruction, 'id-ID': idInstruction },
@@ -287,6 +296,26 @@ const LESSONS = {
           'pasta',
           'map'
         ),
+        wm('O que se usa para proteger da chuva quando está a chover.',
+           'guarda-chuva',
+           ['chapéu', 'cachecol', 'casaco', 'camisola', 'guarda-chuva', 'mochila', 'meias', 'sandálias'],
+           'guarda-chuva', 'payung'),
+        wm('O que se calça no verão quando está calor.',
+           'sandálias',
+           ['chapéu', 'cachecol', 'casaco', 'camisola', 'guarda-chuva', 'mochila', 'meias', 'sandálias'],
+           'sandálias', 'sandal'),
+        wm('O que se coloca à volta do pescoço para proteger do frio.',
+           'cachecol',
+           ['chapéu', 'cachecol', 'casaco', 'camisola', 'guarda-chuva', 'mochila', 'meias', 'sandálias'],
+           'cachecol', 'syal'),
+        wm('O que os alunos usam para transportar os livros da escola.',
+           'mochila',
+           ['chapéu', 'cachecol', 'casaco', 'camisola', 'guarda-chuva', 'mochila', 'meias', 'sandálias'],
+           'mochila', 'ransel'),
+        wm('O que se veste por cima de tudo quando está muito frio.',
+           'casaco',
+           ['chapéu', 'cachecol', 'casaco', 'camisola', 'guarda-chuva', 'mochila', 'meias', 'sandálias'],
+           'casaco', 'jaket'),
       ],
     },
     ],

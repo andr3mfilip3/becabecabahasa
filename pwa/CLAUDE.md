@@ -53,7 +53,7 @@ Navigation via `navigate(screen, patch)` — resets `answered/isCorrect/correctA
 
 ## Exercise Types & Builders (data.js)
 
-All 5 builders produce objects consumed by `exercises.js`:
+All builders produce objects consumed by `exercises.js`:
 
 ```js
 // Multiple choice: "How do you say X in {lang}?" — options are target-lang words
@@ -70,6 +70,11 @@ li(target, ptTrans, idTrans, ptOptions[4], idOptions[4])
 
 // Speaking: auto-plays TTS, user speaks via mic — fuzzy match via checkPronunciation()
 sp(target, ptTrans, idTrans)
+
+// Tutorial: shows translated instruction + target-language example, one answer option
+// instruction is translated (pt+id); exampleDesc is always in target language (plain string)
+// Always scores as correct — used as guided intro before real exercises
+tut(ptInstruction, idInstruction, exampleDesc, target, ptTrans, idTrans)
 ```
 
 **Correct answer logic (exercises.js `getCorrectAnswer`):**
@@ -78,6 +83,7 @@ sp(target, ptTrans, idTrans)
 - `ta` → `ex.target`
 - `li` → `ex.translation[uiLang]`
 - `sp` → always passes via "try later" or fuzzy match
+- `tutorial` → always passes (onAnswer(true))
 
 ## Lesson Data Structure (data.js)
 
@@ -110,10 +116,17 @@ const LESSONS = {
 
 **Level is "locked" (greyed out) if `LESSONS[lang][level].length === 0`.**
 
+## Lesson Locking
+
+Individual lessons support a `locked: true` flag:
+- Locked lessons render greyed out with a 🔒 icon and "Em breve" / "Segera hadir" subtitle
+- They are not clickable (`attachListeners` uses `.lesson-card:not(.locked)[data-lesson]`)
+- Levels are locked when `LESSONS[lang][level].length === 0`
+
 ## Current Content Status
 | Language | Level | Status |
 |---|---|---|
-| pt-PT | ACESSO (A1) | ✅ 8 lessons (greetings, numbers, colors, food, family, body, verbs, places, questions) |
+| pt-PT | ACESSO (A1) | ✅ 9 lessons (greetings, numbers, colors, food, family, body, verbs, places, questions, word-matching) |
 | pt-PT | CIPLE–DUPLE (A2–C2) | ❌ All empty |
 | id-ID | BIPA 1 (A1) | ✅ 8 lessons |
 | id-ID | BIPA 2 (A2) | ⚠️ 1 lesson (daily life / time/connectors) |
@@ -129,7 +142,10 @@ const LESSONS = {
 `t(key)` looks up `I18N[state.uiLang][key]`. UI languages: `pt-PT` and `id-ID` only.
 
 **Lesson title keys available:**
-`lessonGreetings`, `lessonGreetingsSub`, `lessonNumbers`, `lessonNumbersSub`, `lessonColors`, `lessonColorsSub`, `lessonFood`, `lessonFoodSub`, `lessonFamily`, `lessonFamilySub`, `lessonBody`, `lessonBodySub`, `lessonVerbs`, `lessonVerbsSub`, `lessonPlaces`, `lessonPlacesSub`, `lessonQuestions`, `lessonQuestionsSub`, `lessonPhrases`, `lessonPhrasesSub`
+`lessonGreetings`, `lessonGreetingsSub`, `lessonNumbers`, `lessonNumbersSub`, `lessonColors`, `lessonColorsSub`, `lessonFood`, `lessonFoodSub`, `lessonFamily`, `lessonFamilySub`, `lessonBody`, `lessonBodySub`, `lessonVerbs`, `lessonVerbsSub`, `lessonPlaces`, `lessonPlacesSub`, `lessonQuestions`, `lessonQuestionsSub`, `lessonPhrases`, `lessonPhrasesSub`, `lessonWordMatching`, `lessonWordMatchingSub`
+
+**Other i18n keys added:**
+`tutExample` — "Exemplo" / "Contoh" (used in tutorial exercise label)
 
 **For new lesson topics** without an existing key: use a plain string for `title` and `subtitle` (the `t()` function returns the key itself if not found, so strings work fine).
 
