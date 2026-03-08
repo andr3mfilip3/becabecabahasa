@@ -90,6 +90,7 @@ const I18N = {
     lessonBodySub:        'Cabeça, Olho, Nariz…',
     lessonWordMatching:    'Correspondência de Palavras',
     lessonWordMatchingSub: 'Escolha a palavra certa…',
+    tutExample:            'Exemplo',
   },
 
   'id-ID': {
@@ -180,6 +181,7 @@ const I18N = {
     lessonBodySub:        'Kepala, Mata, Hidung…',
     lessonWordMatching:    'Pencocokan Kata',
     lessonWordMatchingSub: 'Pilih kata yang tepat…',
+    tutExample:            'Contoh',
   },
 };
 

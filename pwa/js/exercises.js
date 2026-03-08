@@ -270,24 +270,21 @@ function setupSpeaking(ex, onAnswer) {
 // ── Tutorial ──────────────────────────────────────────────
 
 function renderTutorial(ex) {
+  const instruction = ex.instruction[state.uiLang] || ex.instruction['pt-PT'];
   return `
-    <p class="tut-instruction">${esc(ex.instruction)}</p>
+    <p class="tut-instruction">${esc(instruction)}</p>
     <div class="tut-example">
-      <span class="tut-example-label">Exemplo:</span>
+      <span class="tut-example-label">${esc(t('tutExample'))}:</span>
       <p class="tut-example-desc">${esc(ex.exampleDesc)}</p>
     </div>
     <div class="spacer"></div>
     <div class="options">
       <button class="opt-btn" data-opt="${esc(ex.target)}">${esc(ex.target)}</button>
     </div>
-    <button id="tut-skip" class="btn-try-later">${esc(t('skip'))}</button>
   `;
 }
 
 function setupTutorial(ex, onAnswer) {
-  document.getElementById('tut-skip')
-    .addEventListener('click', () => onAnswer(true, ex.target), { once: true });
-
   document.querySelectorAll('.opt-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.opt-btn').forEach(b => {

@@ -52,9 +52,9 @@ const sp = (target, ptTrans, idTrans) => ({
   translation: { 'pt-PT': ptTrans, 'id-ID': idTrans },
 });
 
-const tut = (instruction, exampleDesc, target, ptTrans, idTrans) => ({
+const tut = (ptInstruction, idInstruction, exampleDesc, target, ptTrans, idTrans) => ({
   type: 'tutorial',
-  instruction,
+  instruction: { 'pt-PT': ptInstruction, 'id-ID': idInstruction },
   exampleDesc,
   target,
   translation: { 'pt-PT': ptTrans, 'id-ID': idTrans },
@@ -281,6 +281,7 @@ const LESSONS = {
       exercises: [
         tut(
           'Lê as frases. Escolhe do quadro abaixo a única palavra que corresponde a cada frase. Há três palavras a mais.',
+          'Baca kalimat-kalimat berikut. Pilih dari kotak di bawah satu kata yang sesuai dengan setiap kalimat. Ada tiga kata yang tidak dipakai.',
           'O que se usa para guardar documentos e papéis importantes.',
           'pasta',
           'pasta',
