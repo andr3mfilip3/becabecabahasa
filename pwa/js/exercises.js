@@ -327,7 +327,7 @@ function setupWM(ex, onAnswer) {
         if (b.dataset.opt === ex.answer) b.classList.add('correct');
         else if (b === btn && !isRight)  b.classList.add('wrong');
       });
-      if (isRight) state.usedAnswers.push(chosen);
+      state.usedAnswers.push(ex.answer);
       onAnswer(isRight, ex.answer);
     });
   });
