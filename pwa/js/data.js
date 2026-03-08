@@ -38,6 +38,7 @@ const mcI = (ptInstruction, idInstruction, options, answerIndex) => ({
   instruction: { 'pt-PT': ptInstruction, 'id-ID': idInstruction },
   target: options[answerIndex],
   options,
+  translation: {},
 });
 
 const ta = (target, ptTrans, idTrans) => ({
