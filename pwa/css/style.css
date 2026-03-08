@@ -590,7 +590,7 @@ body {
 
 .opt-btn.correct  { border-color: var(--green); background: var(--green-light); }
 .opt-btn.wrong    { border-color: var(--red);   background: var(--red-light);   }
-.opt-btn.used     { background: var(--gray-2); color: var(--gray-1); border-color: var(--gray-2); cursor: not-allowed; }
+.opt-btn.used     { background: var(--gray-1); color: var(--gray-1); border-color: var(--gray-1); cursor: not-allowed; }
 
 .options-grid {
   display: grid;
