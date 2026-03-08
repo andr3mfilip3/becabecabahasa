@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/andre/Desktop/APP//**)",
+      "Read(//c/Users/andre/Desktop/APP/**)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\andre\\.claude\\projects\\c--Users-andre-Desktop-APP-becabecabahasa"
+    ]
+  }
+}

@@ -217,13 +217,13 @@ function renderLessonList() {
   const lang    = state.language;
   const lessons = LESSONS[lang.id][state.level] || [];
   const rows = lessons.map((lesson, i) => `
-    <div class="lesson-card" data-lesson="${i}">
-      <div class="lesson-num">${i + 1}</div>
+    <div class="lesson-card${lesson.locked ? ' locked' : ''}" data-lesson="${i}">
+      <div class="lesson-num">${lesson.locked ? '🔒' : i + 1}</div>
       <div class="lesson-info">
         <strong>${esc(t(lesson.title))}</strong>
-        <span>${esc(t(lesson.subtitle))}</span>
+        <span>${esc(lesson.locked ? t('comingSoon') : t(lesson.subtitle))}</span>
       </div>
-      <span class="lesson-play">▶</span>
+      ${lesson.locked ? '' : '<span class="lesson-play">▶</span>'}
     </div>
   `).join('');
 
@@ -386,7 +386,7 @@ function attachListeners() {
   });
 
   // Lesson cards
-  document.querySelectorAll('.lesson-card[data-lesson]').forEach(card => {
+  document.querySelectorAll('.lesson-card:not(.locked)[data-lesson]').forEach(card => {
     card.addEventListener('click', () => {
       navigate('lesson', { lessonIndex: Number(card.dataset.lesson), exerciseIndex: 0, score: 0, scored: [] });
     });

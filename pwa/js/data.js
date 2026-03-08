@@ -266,6 +266,13 @@ const LESSONS = {
         sp('Quanto custa?','Quanto custa?',  'Berapa harganya?'),
       ],
     },
+    {
+      id: 'pt-word-matching',
+      title: 'Correspondência de Palavras',
+      subtitle: 'Em breve…',
+      locked: true,
+      exercises: [],
+    },
     ],
 	'CIPLE': [],
     'DEPLE': [],

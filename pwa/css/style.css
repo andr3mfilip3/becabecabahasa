@@ -395,6 +395,12 @@ body {
   box-shadow: var(--shadow);
 }
 
+.lesson-card.locked {
+  background: var(--gray-3);
+  cursor: default;
+  opacity: .65;
+}
+
 .lesson-num {
   width: 48px; height: 48px;
   border-radius: 50%;
@@ -404,6 +410,11 @@ body {
   font-weight: 800;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
+}
+
+.lesson-card.locked .lesson-num {
+  background: var(--gray-2);
+  font-size: 1.4rem;
 }
 
 .lesson-info { flex: 1; }
