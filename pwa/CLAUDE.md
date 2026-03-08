@@ -63,10 +63,17 @@ mc(target, ptTrans, idTrans, options[4])
 // Multiple choice meaning: "What does X mean?" — options are UI-lang meanings
 mcM(target, ptTrans, idTrans, ptOptions[4], idOptions[4])
 
+// Multiple choice instruction: custom bilingual question, fixed options, answer by index
+// No target word — instruction IS the question. translation:{} is set internally.
+mcI(ptInstruction, idInstruction, options[], answerIndex)
+
 // Type answer: user types the target word (case-insensitive match)
 ta(target, ptTrans, idTrans)
 
 // Listening: auto-plays TTS, shows options after play — options are UI-lang meanings
+// TTS is generated at runtime via Web Speech API (no audio files).
+// Correct answer = ex.translation[uiLang]. For self-referential courses (e.g. PT learning PT),
+// set ptTrans = target so the correct answer matches the audio phrase exactly.
 li(target, ptTrans, idTrans, ptOptions[4], idOptions[4])
 
 // Speaking: auto-plays TTS, user speaks via mic — fuzzy match via checkPronunciation()
@@ -75,6 +82,7 @@ sp(target, ptTrans, idTrans)
 // Tutorial: translated instruction box + target-language example box + one selectable option
 // instruction translated (pt+id); exampleDesc is always target-language (plain string)
 // Always scores as correct. Locks option + shows Continue when going back.
+// Shows ex.target image from IMAGE_MAP if available.
 tut(ptInstruction, idInstruction, exampleDesc, target, ptTrans, idTrans)
 
 // Tutorial Read: translated instruction + scrollable reading passage + always-visible Continue button
@@ -84,6 +92,7 @@ tutRead(ptInstruction, idInstruction, text)
 // Word Match: sentence prompt + 8-option 2-column word bank
 // answer is locked in state.usedAnswers after each question (correct or wrong pick).
 // Locks all + shows Continue when going back (state.scored check).
+// Shows ex.target (= answer) image from IMAGE_MAP if available.
 wm(sentence, answer, wordBank[8], ptTrans, idTrans)
 
 // True/False: reading passage + one true/false question per exercise
@@ -95,6 +104,7 @@ tf(sentence, answer, text)   // answer: 'true' | 'false'
 **Correct answer logic (`getCorrectAnswer` in exercises.js):**
 - `mc` `word` type → `ex.target`
 - `mc` `meaning` type → `ex.translation[uiLang]`
+- `mc` `instruction` type → `ex.target` (= `options[answerIndex]`)
 - `ta` → `ex.target`
 - `li` → `ex.translation[uiLang]`
 - `sp` → always passes via "try later" or fuzzy match
@@ -102,6 +112,8 @@ tf(sentence, answer, text)   // answer: 'true' | 'false'
 - `tutorial-read` → always passes (direct `advanceExercise()`, no feedback bar)
 - `word-match` → `ex.answer`
 - `true-false` → `ex.answer` (`'true'` or `'false'`); correct label shown in feedback
+
+**`getQuestion` in exercises.js** — for `questionType: 'instruction'`, returns `ex.instruction[uiLang]` with pt-PT fallback. For `word`/`meaning`, uses i18n templates as before.
 
 ## Go-Back Locking Pattern
 
@@ -188,7 +200,7 @@ const LESSONS = {
 ## Current Content Status
 | Language | Level | Status |
 |---|---|---|
-| pt-PT | ACESSO (A1) | ✅ 11 lessons: greetings, numbers, colors, food, family, body, verbs, places, questions, word-matching, true-false |
+| pt-PT | ACESSO (A1) | ✅ 11 lessons: greetings, numbers (0–20), colors, food, family, body, verbs, places, questions, word-matching, true-false |
 | pt-PT | CIPLE–DUPLE (A2–C2) | ❌ All empty |
 | id-ID | BIPA 1 (A1) | ✅ 8 lessons |
 | id-ID | BIPA 2–6 (A2–C2) | ⚠️ 1 lesson each |
@@ -212,9 +224,11 @@ const LESSONS = {
 **Plain strings work too:** `t()` returns the key itself if not found, so lesson titles/subtitles can be raw strings.
 
 ## IMAGE_MAP (data.js)
-Maps `ex.target` → image path. Shown on MC and TA exercises.
+Maps `ex.target` → image path. Shown on MC, TA, tutorial (`tut`), and word-match (`wm`) exercises via `getExImg(ex)`.
 
-**Categories:** greetings, numbers (1–10), family, colors, body parts, food/drink, verbs, places.
+**Categories:** greetings, numbers (0–20 selected), question words, clothing (chinelos/cachecol/guarda-chuva/mochila/pasta/casaco), family, colors, body parts, food/drink, verbs, places.
+
+**Special entry:** `'Uma manhã preguiçosa': 'images/Wake up.png'` — used by the `mcI` exercise in pt-true-false (target = correct option string).
 
 ## EXAMPLE_MAP (data.js)
 Maps `ex.target` → example sentence shown in exercises.
@@ -258,10 +272,11 @@ Reference tables in the "Resources" section:
 - `.feedback-bar.correct/.wrong` — bottom bar with icon, label, continue button
 
 ## Speech (speech.js)
-- `speak(text, lang)` — TTS at rate 0.85; iOS workaround with 100ms delay
+- `speak(text, lang)` — Web Speech API TTS at rate 0.85; iOS workaround with 100ms delay. **No audio files** — speech is synthesized at runtime by the browser/OS voice pack.
 - `startRecognition(lang, onResult, onEnd)` — STT; `onResult(heard)` with transcript
 - `checkPronunciation(heard, target)` — fuzzy: passes if normalized strings match or one contains the other
 - Speaking exercises have a "Try later" button that always passes (`onAnswer(true)`)
+- Listening exercises: `setupListening` calls `speak(ex.target, state.language.id)` — audio is always the `target` word/phrase
 
 ## Service Worker & Deploy
 - `sw.js` uses `__BUILD_VERSION__` placeholder replaced by `build.js` at deploy time

@@ -73,7 +73,7 @@ const I18N = {
     lessonNumbers:        'Números',
     lessonNumbersSub:     '1 a 100',
     lessonPhrases:        'Frases Essenciais',
-    lessonPhrasesSub:     'Onde?, Como vai?, Desculpe…',
+    lessonPhrasesSub:     'Onde?, Tudo bem?, Desculpe…',
     lessonColors:         'Cores',
     lessonColorsSub:      'Vermelho, Azul, Verde…',
     lessonFood:           'Comida & Bebida',
