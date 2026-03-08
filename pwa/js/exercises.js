@@ -348,7 +348,7 @@ function setupWM(ex, onAnswer) {
 
 function renderTutorialRead(ex) {
   return `
-    <p class="tut-instruction">${esc(ex.instruction)}</p>
+    <p class="tut-instruction">${esc(ex.instruction[state.uiLang] || ex.instruction['pt-PT'])}</p>
     <div class="tut-reading">
       <p>${esc(ex.text)}</p>
     </div>

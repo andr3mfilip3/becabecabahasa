@@ -69,9 +69,9 @@ const tut = (ptInstruction, idInstruction, exampleDesc, target, ptTrans, idTrans
   translation: { 'pt-PT': ptTrans, 'id-ID': idTrans },
 });
 
-const tutRead = (instruction, text) => ({
+const tutRead = (ptInstruction, idInstruction, text) => ({
   type: 'tutorial-read',
-  instruction,
+  instruction: { 'pt-PT': ptInstruction, 'id-ID': idInstruction },
   text,
 });
 
@@ -338,7 +338,7 @@ const LESSONS = {
         title: 'lessonTrueFalse',
         subtitle: 'lessonTrueFalseSub',
         exercises: [
-          tutRead('Lê o texto e responde às questões.', _t),
+          tutRead('Lê o texto e responde às questões.', 'Baca teks berikut dan jawab pertanyaan-pertanyaannya.', _t),
           tf('O verão já acabou.',                                   'true',  _t),
           tf('O pai vai sempre chamar a Ana ao seu quarto.',         'true',  _t),
           tf('A Ana nunca se levanta de manhã.',                     'false', _t),
