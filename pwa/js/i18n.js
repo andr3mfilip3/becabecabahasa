@@ -88,7 +88,8 @@ const I18N = {
     lessonQuestionsSub:   'Quem, Quando, Como…',
     lessonBody:           'Corpo',
     lessonBodySub:        'Cabeça, Olho, Nariz…',
-    lessonWordMatching:   'Correspondência de Palavras',
+    lessonWordMatching:    'Correspondência de Palavras',
+    lessonWordMatchingSub: 'Escolha a palavra certa…',
   },
 
   'id-ID': {
@@ -177,7 +178,8 @@ const I18N = {
     lessonQuestionsSub:   'Siapa, Kapan, Bagaimana…',
     lessonBody:           'Tubuh',
     lessonBodySub:        'Kepala, Mata, Hidung…',
-    lessonWordMatching:   'Pencocokan Kata',
+    lessonWordMatching:    'Pencocokan Kata',
+    lessonWordMatchingSub: 'Pilih kata yang tepat…',
   },
 };
 

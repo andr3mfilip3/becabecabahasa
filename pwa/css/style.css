@@ -529,6 +529,40 @@ body {
 
 .ex-gap { height: 12px; }
 
+/* ── Tutorial ──────────────────────────────────────────── */
+.tut-instruction {
+  font-size: .95rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--blue-light);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.tut-example {
+  background: var(--gray-3);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.tut-example-label {
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--blue);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.tut-example-desc {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.5;
+}
+
 /* ── Option Buttons ────────────────────────────────────── */
 .options {
   display: flex;

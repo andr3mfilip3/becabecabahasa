@@ -52,6 +52,14 @@ const sp = (target, ptTrans, idTrans) => ({
   translation: { 'pt-PT': ptTrans, 'id-ID': idTrans },
 });
 
+const tut = (instruction, exampleDesc, target, ptTrans, idTrans) => ({
+  type: 'tutorial',
+  instruction,
+  exampleDesc,
+  target,
+  translation: { 'pt-PT': ptTrans, 'id-ID': idTrans },
+});
+
 // ── Levels ────────────────────────────────────────────────
 const LEVELS = {
   'pt-PT': [
@@ -269,9 +277,16 @@ const LESSONS = {
     {
       id: 'pt-word-matching',
       title: 'lessonWordMatching',
-      subtitle: '',
-      locked: true,
-      exercises: [],
+      subtitle: 'lessonWordMatchingSub',
+      exercises: [
+        tut(
+          'Lê as frases. Escolhe do quadro abaixo a única palavra que corresponde a cada frase. Há três palavras a mais.',
+          'O que se usa para guardar documentos e papéis importantes.',
+          'pasta',
+          'pasta',
+          'map'
+        ),
+      ],
     },
     ],
 	'CIPLE': [],

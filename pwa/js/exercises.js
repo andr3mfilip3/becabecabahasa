@@ -8,16 +8,18 @@ function renderExercise(exercise) {
     case 'type-answer':     return renderTA(exercise);
     case 'listening':       return renderListening(exercise);
     case 'speaking':        return renderSpeaking(exercise);
+    case 'tutorial':        return renderTutorial(exercise);
     default: return '';
   }
 }
 
 function setupExerciseListeners(exercise, onAnswer) {
   switch (exercise.type) {
-    case 'multiple-choice': setupMC(exercise, onAnswer);       break;
-    case 'type-answer':     setupTA(exercise, onAnswer);       break;
+    case 'multiple-choice': setupMC(exercise, onAnswer);        break;
+    case 'type-answer':     setupTA(exercise, onAnswer);        break;
     case 'listening':       setupListening(exercise, onAnswer); break;
-    case 'speaking':        setupSpeaking(exercise, onAnswer); break;
+    case 'speaking':        setupSpeaking(exercise, onAnswer);  break;
+    case 'tutorial':        setupTutorial(exercise, onAnswer);  break;
   }
 }
 
@@ -262,6 +264,38 @@ function setupSpeaking(ex, onAnswer) {
         }
       );
     }
+  });
+}
+
+// ── Tutorial ──────────────────────────────────────────────
+
+function renderTutorial(ex) {
+  return `
+    <p class="tut-instruction">${esc(ex.instruction)}</p>
+    <div class="tut-example">
+      <span class="tut-example-label">Exemplo:</span>
+      <p class="tut-example-desc">${esc(ex.exampleDesc)}</p>
+    </div>
+    <div class="spacer"></div>
+    <div class="options">
+      <button class="opt-btn" data-opt="${esc(ex.target)}">${esc(ex.target)}</button>
+    </div>
+    <button id="tut-skip" class="btn-try-later">${esc(t('skip'))}</button>
+  `;
+}
+
+function setupTutorial(ex, onAnswer) {
+  document.getElementById('tut-skip')
+    .addEventListener('click', () => onAnswer(true, ex.target), { once: true });
+
+  document.querySelectorAll('.opt-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.opt-btn').forEach(b => {
+        b.disabled = true;
+        if (b.dataset.opt === ex.target) b.classList.add('correct');
+      });
+      onAnswer(true, ex.target);
+    });
   });
 }
 
