@@ -226,9 +226,11 @@ const LESSONS = {
 ## IMAGE_MAP (data.js)
 Maps `ex.target` → image path. Shown on MC, TA, tutorial (`tut`), and word-match (`wm`) exercises via `getExImg(ex)`.
 
+**Image base URL:** `https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/` (Cloudflare R2). Images are no longer in the `pwa/images/` local folder.
+
 **Categories:** greetings, numbers (0–20 selected), question words, clothing (chinelos/cachecol/guarda-chuva/mochila/pasta/casaco), family, colors, body parts, food/drink, verbs, places.
 
-**Special entry:** `'Uma manhã preguiçosa': 'images/Wake up.png'` — used by the `mcI` exercise in pt-true-false (target = correct option string).
+**Special entry:** `'Uma manhã preguiçosa'` → `Wake up.png` — used by the `mcI` exercise in pt-true-false (target = correct option string).
 
 ## EXAMPLE_MAP (data.js)
 Maps `ex.target` → example sentence shown in exercises.
@@ -280,8 +282,8 @@ Reference tables in the "Resources" section:
 
 ## Service Worker & Deploy
 - `sw.js` uses `__BUILD_VERSION__` placeholder replaced by `build.js` at deploy time
-- Cache strategy: network-first for HTML, stale-while-revalidate for CSS/JS/images
-- Images are NOT pre-cached (fetched on demand, cached via stale-while-revalidate)
+- Cache strategy: network-first for HTML, stale-while-revalidate for CSS/JS
+- Images are served from Cloudflare R2 (external URL) — not cached by the SW, not in `_headers`
 
 ## PT/ Folder (not yet integrated)
 `C:\Users\andre\Desktop\APP\PT\` contains official CAPLE exam JSON files (A1–C1). Types: `dialogue_completion`, `word_matching`, `reading_comprehension`, `gap_fill_verb`, `gap_fill_grammar`. Source material only — not integrated into the PWA.
