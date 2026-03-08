@@ -590,7 +590,7 @@ body {
 
 .opt-btn.correct  { border-color: var(--green); background: var(--green-light); }
 .opt-btn.wrong    { border-color: var(--red);   background: var(--red-light);   }
-.opt-btn.used     { background: var(--gray-3); color: var(--gray-1); border-color: var(--gray-2); cursor: not-allowed; }
+.opt-btn.used     { background: var(--gray-2); color: var(--gray-1); border-color: var(--gray-2); cursor: not-allowed; }
 
 .options-grid {
   display: grid;
@@ -607,6 +607,14 @@ body {
   color: var(--text);
   max-height: 45vh;
   overflow-y: auto;
+}
+
+.tf-question {
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: left;
+  line-height: 1.4;
+  margin-top: 16px;
 }
 
 /* ── Type Answer ───────────────────────────────────────── */

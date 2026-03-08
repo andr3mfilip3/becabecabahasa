@@ -378,7 +378,8 @@ function renderTF(ex) {
     <div class="tut-reading">
       <p>${esc(ex.text)}</p>
     </div>
-    <p class="ex-question">${esc(ex.sentence)}</p>
+    <p class="tf-question">${esc(ex.sentence)}</p>
+    <div class="spacer"></div>
     <div class="options">
       <button class="opt-btn" data-answer="true"${alreadyAnswered ? ' disabled' : ''}>${esc(t('trueLabel'))}</button>
       <button class="opt-btn" data-answer="false"${alreadyAnswered ? ' disabled' : ''}>${esc(t('falseLabel'))}</button>
