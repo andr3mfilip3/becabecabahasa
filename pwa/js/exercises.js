@@ -278,13 +278,15 @@ function setupSpeaking(ex, onAnswer) {
 function renderTutorial(ex) {
   const instruction     = ex.instruction[state.uiLang] || ex.instruction['pt-PT'];
   const alreadyAnswered = !!state.scored[state.exerciseIndex];
+  const img = getExImg(ex);
   return `
     <p class="tut-instruction">${esc(instruction)}</p>
     <div class="tut-example">
       <span class="tut-example-label">${esc(t('tutExample'))}:</span>
       <p class="tut-example-desc">${esc(ex.exampleDesc)}</p>
     </div>
-    <div class="spacer"></div>
+    ${img}
+    ${img ? '<div class="ex-gap"></div>' : '<div class="spacer"></div>'}
     <div class="options">
       <button class="opt-btn" data-opt="${esc(ex.target)}"${alreadyAnswered ? ' disabled' : ''}>${esc(ex.target)}</button>
     </div>
@@ -310,6 +312,7 @@ function setupTutorial(ex, onAnswer) {
 function renderWM(ex) {
   const used            = state.usedAnswers || [];
   const alreadyAnswered = !!state.scored[state.exerciseIndex];
+  const img = getExImg(ex);
   const opts = ex.wordBank.map(word => {
     const isUsed   = used.includes(word);
     const disabled = alreadyAnswered || isUsed;
@@ -319,7 +322,8 @@ function renderWM(ex) {
     <div class="tut-example">
       <p class="tut-example-desc">${esc(ex.sentence)}</p>
     </div>
-    <div class="spacer"></div>
+    ${img}
+    ${img ? '<div class="ex-gap"></div>' : '<div class="spacer"></div>'}
     <div class="options options-grid">
       ${opts}
     </div>
