@@ -263,6 +263,21 @@ const LESSONS = {
         mc('ir',       'ir',       'pergi',    ['ir', 'vir', 'morar', 'voltar']),
         ta('morar',    'morar',    'tinggal'),
         ta('vir',      'vir / chegar', 'datang'),
+        mcI(
+          'Complete a frase com o verbo correto:\n\n"É proibido ______ fotografias no interior do museu."',
+          'Lengkapi kalimat dengan kata kerja yang tepat:\n\n"É proibido ______ fotografias no interior do museu."',
+          ['falar', 'tirar', 'deixar', 'beber'], 1
+        ),
+        mcI(
+          'Complete a frase com o verbo correto:\n\n"É obrigatório ______ máscara neste espaço."',
+          'Lengkapi kalimat dengan kata kerja yang tepat:\n\n"É obrigatório ______ máscara neste espaço."',
+          ['usar', 'correr', 'comer', 'deixar'], 0
+        ),
+        mcI(
+          'Complete a frase com o verbo correto:\n\n"Não é permitido ______ ao telefone durante a aula."',
+          'Lengkapi kalimat dengan kata kerja yang tepat:\n\n"Não é permitido ______ ao telefone durante a aula."',
+          ['falar', 'correr', 'comer', 'deixar'], 0
+        ),
       ],
     },
     {
