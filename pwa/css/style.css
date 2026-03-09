@@ -892,7 +892,7 @@ body {
   padding: 1px 6px;
   margin: 0 2px;
 }
-.gf-blank.empty  { border-bottom: 2px dashed var(--gray-1); color: var(--gray-1); }
+.gf-blank.empty  { color: var(--gray-1); }
 .gf-blank.filled { background: var(--blue-light); color: var(--blue); }
 .gf-blank.correct { background: var(--green-light); color: #2a7a00; }
 .gf-blank.wrong   { background: var(--red-light); color: var(--red); }
