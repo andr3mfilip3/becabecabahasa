@@ -948,3 +948,121 @@ body {
 .gf-chip.correct     { border-color: var(--green); background: var(--green-light); color: #2a7a00; }
 .gf-chip.wrong       { border-color: var(--red); background: var(--red-light); color: var(--red); }
 .gf-chip[disabled]   { cursor: default; opacity: .85; }
+
+/* ── Dialogue Completion ────────────────────────────────── */
+.dc-context {
+  font-style: italic;
+  color: var(--gray-1);
+  font-size: .9rem;
+  text-align: left;
+  width: 100%;
+  margin: 0;
+}
+
+.dc-dialogue {
+  background: var(--gray-3);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: .9rem;
+}
+
+.dc-line {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  line-height: 1.5;
+}
+
+.dc-line.dc-example { opacity: .65; }
+
+.dc-speaker {
+  font-weight: 700;
+  color: var(--blue);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.dc-text { flex: 1; }
+
+.dc-badge {
+  display: inline-block;
+  background: var(--green-light);
+  color: #2a7a00;
+  font-weight: 700;
+  font-size: .8rem;
+  border-radius: 6px;
+  padding: 1px 6px;
+  margin-right: 2px;
+}
+
+.dc-blank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: .9rem;
+  cursor: pointer;
+  transition: box-shadow .15s, background .15s;
+  vertical-align: middle;
+}
+.dc-blank.empty   { background: var(--blue-light); color: var(--blue); }
+.dc-blank.active  { box-shadow: 0 0 0 2px var(--blue); }
+.dc-blank.filled  { background: var(--blue-light); color: var(--blue); }
+.dc-blank.correct { background: var(--green-light); color: #2a7a00; cursor: default; }
+.dc-blank.wrong   { background: var(--red-light); color: var(--red); cursor: default; }
+
+.dc-options {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.dc-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  border: 2px solid var(--gray-2);
+  border-radius: var(--radius);
+  background: #fff;
+  font-size: .88rem;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .15s, background .15s;
+}
+.dc-option:hover     { border-color: var(--blue); }
+.dc-option.used      { background: var(--blue-light); border-color: var(--blue); }
+.dc-option.correct   { border-color: var(--green); background: var(--green-light); }
+.dc-option.wrong     { border-color: var(--red); background: var(--red-light); }
+.dc-option[disabled] { cursor: default; opacity: .9; }
+
+.dc-opt-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  font-size: .8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.dc-option.used    .dc-opt-label { background: var(--blue); }
+.dc-option.correct .dc-opt-label { background: var(--green); }
+.dc-option.wrong   .dc-opt-label { background: var(--red); }
+
+.dc-opt-text { flex: 1; color: #333; }
+
+#dc-check { margin-top: 10px; }

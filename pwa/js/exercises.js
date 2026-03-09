@@ -12,7 +12,8 @@ function renderExercise(exercise) {
     case 'tutorial-read':   return renderTutorialRead(exercise);
     case 'word-match':      return renderWM(exercise);
     case 'true-false':      return renderTF(exercise);
-    case 'gap-fill':        return renderGF(exercise);
+    case 'gap-fill':               return renderGF(exercise);
+    case 'dialogue-completion':    return renderDC(exercise);
     default: return '';
   }
 }
@@ -27,7 +28,8 @@ function setupExerciseListeners(exercise, onAnswer) {
     case 'tutorial-read':   setupTutorialRead(exercise, onAnswer); break;
     case 'word-match':      setupWM(exercise, onAnswer);           break;
     case 'true-false':      setupTF(exercise, onAnswer);           break;
-    case 'gap-fill':        setupGF(exercise, onAnswer);           break;
+    case 'gap-fill':               setupGF(exercise, onAnswer);     break;
+    case 'dialogue-completion':    setupDC(exercise, onAnswer);     break;
   }
 }
 
@@ -486,6 +488,138 @@ function setupGF(ex, onAnswer) {
       if (span) {
         span.textContent = selected[q.id] || q.answer;
         span.className = `gf-blank ${selected[q.id] === q.answer ? 'correct' : 'wrong'}`;
+      }
+    });
+    checkBtn.disabled = true;
+    onAnswer(allCorrect, null);
+  });
+}
+
+// ── Dialogue Completion ───────────────────────────────────
+
+function renderDC(ex) {
+  const alreadyAnswered = !!state.scored[state.exerciseIndex];
+  const instruction = ex.instruction[state.uiLang] || ex.instruction['pt-PT'];
+
+  const dialogueHtml = ex.dialogue.map(({ speaker, line, gapId, exampleLabel }) => {
+    if (exampleLabel) {
+      return `
+        <div class="dc-line dc-example">
+          <span class="dc-speaker">${esc(speaker)}:</span>
+          <span class="dc-text"><span class="dc-badge">(Exemplo) ${esc(exampleLabel)}</span> ${esc(line)}</span>
+        </div>`;
+    }
+    if (gapId) {
+      const slot = alreadyAnswered
+        ? `<span class="dc-blank correct">${esc(ex.answers[gapId])}</span>`
+        : `<span class="dc-blank empty" data-gap="${gapId}">(${gapId})</span>`;
+      return `
+        <div class="dc-line">
+          <span class="dc-speaker">${esc(speaker)}:</span>
+          <span class="dc-text">${slot}</span>
+        </div>`;
+    }
+    return `
+      <div class="dc-line">
+        <span class="dc-speaker">${esc(speaker)}:</span>
+        <span class="dc-text">${esc(line)}</span>
+      </div>`;
+  }).join('');
+
+  const optionsHtml = ex.options.map(opt => `
+    <button class="dc-option" data-label="${esc(opt.label)}">
+      <span class="dc-opt-label">${esc(opt.label)}</span>
+      <span class="dc-opt-text">${esc(opt.text)}</span>
+    </button>`).join('');
+
+  return `
+    <p class="tut-instruction">${esc(instruction)}</p>
+    <p class="dc-context">${esc(ex.context)}</p>
+    <div class="dc-dialogue">${dialogueHtml}</div>
+    ${alreadyAnswered
+      ? `<button class="btn-continue" id="btn-continue">${esc(t('continue'))}</button>`
+      : `<div class="dc-options">${optionsHtml}</div>
+         <button class="btn-check" id="dc-check" disabled>${esc(t('check'))}</button>`
+    }
+  `;
+}
+
+function setupDC(ex, onAnswer) {
+  if (state.scored[state.exerciseIndex]) return;
+
+  const filled  = {};   // gapId → option label
+  const checkBtn = document.getElementById('dc-check');
+  let activeGap = null;
+
+  const gapIds = Object.keys(ex.answers);
+
+  const updateCheck = () => {
+    checkBtn.disabled = !gapIds.every(id => filled[id]);
+  };
+
+  const refreshOptionStyles = () => {
+    document.querySelectorAll('.dc-option').forEach(opt => {
+      opt.classList.toggle('used', Object.values(filled).includes(opt.dataset.label));
+    });
+  };
+
+  // Click blank → activate it
+  document.querySelectorAll('.dc-blank.empty').forEach(blank => {
+    blank.addEventListener('click', () => {
+      document.querySelectorAll('.dc-blank').forEach(b => b.classList.remove('active'));
+      blank.classList.add('active');
+      activeGap = blank.dataset.gap;
+    });
+  });
+
+  // Click option → fill active blank (or auto-pick next empty)
+  document.querySelectorAll('.dc-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      if (!activeGap) {
+        const next = document.querySelector('.dc-blank.empty:not(.active)') ||
+                     document.querySelector('.dc-blank.empty');
+        if (!next) return;
+        activeGap = next.dataset.gap;
+      }
+
+      const label = opt.dataset.label;
+
+      // If this option was already assigned elsewhere, clear that blank
+      const prevGap = Object.keys(filled).find(id => filled[id] === label);
+      if (prevGap && prevGap !== activeGap) {
+        delete filled[prevGap];
+        const prevSpan = document.querySelector(`.dc-blank[data-gap="${prevGap}"]`);
+        if (prevSpan) { prevSpan.textContent = `(${prevGap})`; prevSpan.className = 'dc-blank empty'; }
+      }
+
+      filled[activeGap] = label;
+      const span = document.querySelector(`.dc-blank[data-gap="${activeGap}"]`);
+      if (span) { span.textContent = label; span.className = 'dc-blank filled active'; }
+
+      // Auto-advance active to next empty blank
+      const nextEmpty = document.querySelector('.dc-blank.empty:not(.active)');
+      document.querySelectorAll('.dc-blank').forEach(b => b.classList.remove('active'));
+      if (nextEmpty) { nextEmpty.classList.add('active'); activeGap = nextEmpty.dataset.gap; }
+      else activeGap = null;
+
+      refreshOptionStyles();
+      updateCheck();
+    });
+  });
+
+  checkBtn.addEventListener('click', () => {
+    const allCorrect = gapIds.every(id => filled[id] === ex.answers[id]);
+
+    document.querySelectorAll('.dc-blank[data-gap]').forEach(span => {
+      const id = span.dataset.gap;
+      span.className = `dc-blank ${filled[id] === ex.answers[id] ? 'correct' : 'wrong'}`;
+    });
+    document.querySelectorAll('.dc-option').forEach(opt => {
+      opt.disabled = true;
+      const label = opt.dataset.label;
+      const usedGap = Object.keys(filled).find(id => filled[id] === label);
+      if (usedGap) {
+        opt.classList.add(filled[usedGap] === ex.answers[usedGap] ? 'correct' : 'wrong');
       }
     });
     checkBtn.disabled = true;

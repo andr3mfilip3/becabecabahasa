@@ -99,6 +99,17 @@ const gf = (ptInstruction, idInstruction, text, questions) => ({
   target: null,
 });
 
+const dc = (ptInstruction, idInstruction, context, dialogue, options, answers) => ({
+  type: 'dialogue-completion',
+  instruction: { 'pt-PT': ptInstruction, 'id-ID': idInstruction },
+  context,    // plain string (target language), shown as scene-setter
+  dialogue,   // [{ speaker, line? , gapId?, exampleLabel? }]
+  options,    // [{ label: 'A', text: '...' }]
+  answers,    // { '1': 'A', '2': 'C', ... }
+  translation: {},
+  target: null,
+});
+
 // ── Levels ────────────────────────────────────────────────
 const LEVELS = {
   'pt-PT': [
@@ -405,6 +416,38 @@ const LESSONS = {
             { id: '4', options: ['nem', 'e', 'ou'],          answer: 'e'     },
             { id: '5', options: ['depois', 'já', 'antes'],   answer: 'depois'},
           ]
+        ),
+      ],
+    },
+    {
+      id: 'pt-dialogue', title: 'lessonDialogue', subtitle: 'lessonDialogueSub',
+      exercises: [
+        dc(
+          'Completa o diálogo com as falas que estão no quadro abaixo, escrevendo uma letra em cada espaço.',
+          'Lengkapi dialog dengan kalimat dari kotak di bawah ini, tulis satu huruf di setiap titik-titik.',
+          'Duas amigas, a Marta e a Sofia, vão comprar uma prenda para a professora.',
+          [
+            { speaker: 'Marta', line: 'Sofia, estes chocolates são bonitos. Qualquer professora gosta de chocolates!' },
+            { speaker: 'Sofia', line: 'Sim, são muito bonitos. Mas a professora prefere flores, não achas?', exampleLabel: 'B' },
+            { speaker: 'Marta', line: 'Sim, tens razão. Ela está sempre a falar de jardins.' },
+            { speaker: 'Sofia', gapId: '1' },
+            { speaker: 'Marta', line: 'Boa ideia. A professora gosta muito de rosas.' },
+            { speaker: 'Sofia', gapId: '2' },
+            { speaker: 'Marta', line: 'Esse ramo é muito bonito. Acho que a professora vai adorar. Quanto é que custa?' },
+            { speaker: 'Sofia', gapId: '3' },
+            { speaker: 'Marta', line: 'Não, é um bom preço.' },
+            { speaker: 'Sofia', gapId: '4' },
+            { speaker: 'Marta', line: 'Sim, acho que é uma prenda muito especial.' },
+          ],
+          [
+            { label: 'A', text: 'Então vamos a uma florista comprar flores!' },
+            { label: 'B', text: 'Sim, são muito bonitos. Mas a professora prefere flores, não achas?' },
+            { label: 'C', text: 'Olha, aquelas rosas são lindas. Vamos comprar esse ramo?' },
+            { label: 'D', text: 'Custa doze euros. Achas que é caro?' },
+            { label: 'E', text: 'Ótimo! Acho que é uma prenda muito especial, não achas?' },
+            { label: 'F', text: 'Eu não sei. Talvez seja melhor dar livros.' },
+          ],
+          { '1': 'A', '2': 'C', '3': 'D', '4': 'E' }
         ),
       ],
     },

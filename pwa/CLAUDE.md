@@ -113,6 +113,14 @@ wm(sentence, answer, wordBank[8], ptTrans, idTrans)
 // Uses opt-btn buttons in 2-column grid. data-answer="true"|"false" attribute.
 // Locks correct answer with .used class + shows Continue when going back.
 tf(sentence, answer, text)   // answer: 'true' | 'false'
+
+// Gap Fill: bilingual instruction + passage with numbered blanks + chip options per gap
+// Blanks in source text: "(1) ______", "(2) ______" etc. — displayed as __(1)__, __(2)__
+// Each gap has 3 chip options. Check button enabled only when all gaps filled.
+// Scores all-or-nothing (allCorrect). Passes null correctAnswer — feedback bar shows no answer line.
+// Go-back: shows passage with correct answers filled green + Continue.
+gf(ptInstruction, idInstruction, text, questions)
+// questions: [{ id: '1', options: ['a','b','c'], answer: 'a' }, ...]
 ```
 
 **Correct answer logic (`getCorrectAnswer` in exercises.js):**
@@ -214,7 +222,7 @@ const LESSONS = {
 ## Current Content Status
 | Language | Level | Status |
 |---|---|---|
-| pt-PT | ACESSO (A1) | ✅ 11 active lessons: greetings, numbers (0–20), colors, food, family, body, verbs, places, questions, word-matching, true-false + 7 locked: pronouns, adjectives, animals, prepositions, time, phrases, sentences |
+| pt-PT | ACESSO (A1) | ✅ 12 active lessons: greetings, numbers (0–20), colors, food, family, body, verbs, places, questions, word-matching, true-false, grammar-fill + 7 locked: pronouns, adjectives, animals, prepositions, time, phrases, sentences |
 | pt-PT | CIPLE–DUPLE (A2–C2) | ❌ All empty |
 | id-ID | BIPA 1 (A1) | ✅ 8 active lessons + 7 locked: pronouns, adjectives, animals, prepositions, time, phrases, sentences |
 | id-ID | BIPA 2–6 (A2–C2) | ⚠️ 1 lesson each |
@@ -226,7 +234,7 @@ const LESSONS = {
 `t(key)` looks up `I18N[state.uiLang][key]`. UI languages: `pt-PT` and `id-ID` only.
 
 **All lesson title keys:**
-`lessonGreetings/Sub`, `lessonNumbers/Sub`, `lessonColors/Sub`, `lessonFood/Sub`, `lessonFamily/Sub`, `lessonBody/Sub`, `lessonVerbs/Sub`, `lessonPlaces/Sub`, `lessonQuestions/Sub`, `lessonPhrases/Sub`, `lessonWordMatching/Sub`, `lessonTrueFalse/Sub`
+`lessonGreetings/Sub`, `lessonNumbers/Sub`, `lessonColors/Sub`, `lessonFood/Sub`, `lessonFamily/Sub`, `lessonBody/Sub`, `lessonVerbs/Sub`, `lessonPlaces/Sub`, `lessonQuestions/Sub`, `lessonPhrases/Sub`, `lessonWordMatching/Sub`, `lessonTrueFalse/Sub`, `lessonGapFill/Sub`
 
 **Exercise-specific keys:**
 - `tutExample` — "Exemplo" / "Contoh" (tutorial example label)
@@ -292,6 +300,12 @@ Reference tables in the "Resources" section:
 - `.btn-resources` — purple (#CE82FF) variant of `.btn-home` (complete screen resources)
 - `.complete-actions` — flex column wrapper for complete screen buttons (gap 8px, margin-top 12px)
 - `.complete-row` — flex row for side-by-side buttons (gap 8px, max-width 320px)
+- `.gf-text` — passage box (gray bg, rounded, smaller font)
+- `.gf-blank.empty/.filled/.correct/.wrong` — inline blank spans in passage
+- `.gf-groups` — flex column of gap option rows (margin-top 10px)
+- `.gf-group` — one row: `.gf-label` (blue circle) + `.gf-chips` (flex row of pill buttons)
+- `.gf-chip` / `.gf-chip.selected/.correct/.wrong` — selectable pill option buttons
+- `#gf-check` — check button (margin-top 10px); disabled until all gaps filled
 
 ## Speech (speech.js)
 - `speak(text, lang)` — Web Speech API TTS at rate 0.85; iOS workaround with 100ms delay. **No audio files** — speech is synthesized at runtime by the browser/OS voice pack.
