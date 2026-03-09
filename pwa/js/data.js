@@ -1246,7 +1246,7 @@ const EXAMPLE_MAP = {
   'Oranye':   'Jeruk berwarna oranye.',
   'Laranja':  'A laranja tem cor de laranja.',
   'Putih':    'Seragam dokter berwarna putih.',
-  'Branco':   'O jaleco do médico é branco.',
+  'Branco':   'A nuvem é branca.',
   'Hitam':    'Domba itu berbulu hitam.',
   'Preto':    'A ovelha tem lã preta.',
   'Coklat':   'Saya suka warna coklat.',
