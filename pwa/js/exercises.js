@@ -526,11 +526,15 @@ function renderDC(ex) {
       </div>`;
   }).join('');
 
-  const optionsHtml = ex.options.map(opt => `
-    <button class="dc-option" data-label="${esc(opt.label)}">
+  const exampleLabels = new Set(ex.dialogue.filter(d => d.exampleLabel).map(d => d.exampleLabel));
+  const optionsHtml = ex.options.map(opt => {
+    const isExample = exampleLabels.has(opt.label);
+    return `
+    <button class="dc-option${isExample ? ' used' : ''}" data-label="${esc(opt.label)}"${isExample ? ' disabled' : ''}>
       <span class="dc-opt-label">${esc(opt.label)}</span>
       <span class="dc-opt-text">${esc(opt.text)}</span>
-    </button>`).join('');
+    </button>`;
+  }).join('');
 
   return `
     <p class="tut-instruction">${esc(instruction)}</p>
@@ -552,13 +556,14 @@ function setupDC(ex, onAnswer) {
   let activeGap = null;
 
   const gapIds = Object.keys(ex.answers);
+  const exampleLabels = new Set(ex.dialogue.filter(d => d.exampleLabel).map(d => d.exampleLabel));
 
   const updateCheck = () => {
     checkBtn.disabled = !gapIds.every(id => filled[id]);
   };
 
   const refreshOptionStyles = () => {
-    document.querySelectorAll('.dc-option').forEach(opt => {
+    document.querySelectorAll('.dc-option:not([disabled])').forEach(opt => {
       opt.classList.toggle('used', Object.values(filled).includes(opt.dataset.label));
     });
   };
@@ -573,7 +578,7 @@ function setupDC(ex, onAnswer) {
   });
 
   // Click option → fill active blank (or auto-pick next empty)
-  document.querySelectorAll('.dc-option').forEach(opt => {
+  document.querySelectorAll('.dc-option:not([disabled])').forEach(opt => {
     opt.addEventListener('click', () => {
       if (!activeGap) {
         const next = document.querySelector('.dc-blank.empty:not(.active)') ||
