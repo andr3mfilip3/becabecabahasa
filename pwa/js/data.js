@@ -1731,7 +1731,8 @@ const RESOURCES = {
           heading: 'Números / Numbers',
           cols: ['#', 'Português', 'English'],
           rows: [
-            ['1', 'um / uma', 'one'],
+            ['0', 'zero', 'zero'],
+			['1', 'um / uma', 'one'],
             ['2', 'dois / duas', 'two'],
             ['3', 'três', 'three'],
             ['4', 'quatro', 'four'],
