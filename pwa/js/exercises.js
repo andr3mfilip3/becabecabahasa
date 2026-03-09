@@ -12,6 +12,7 @@ function renderExercise(exercise) {
     case 'tutorial-read':   return renderTutorialRead(exercise);
     case 'word-match':      return renderWM(exercise);
     case 'true-false':      return renderTF(exercise);
+    case 'gap-fill':        return renderGF(exercise);
     default: return '';
   }
 }
@@ -26,6 +27,7 @@ function setupExerciseListeners(exercise, onAnswer) {
     case 'tutorial-read':   setupTutorialRead(exercise, onAnswer); break;
     case 'word-match':      setupWM(exercise, onAnswer);           break;
     case 'true-false':      setupTF(exercise, onAnswer);           break;
+    case 'gap-fill':        setupGF(exercise, onAnswer);           break;
   }
 }
 
@@ -408,6 +410,86 @@ function setupTF(ex, onAnswer) {
       const correctLabel = ex.answer === 'true' ? t('trueLabel') : t('falseLabel');
       onAnswer(isRight, correctLabel);
     });
+  });
+}
+
+// ── Gap Fill ──────────────────────────────────────────────
+
+function gfTextHtml(text, questions, selected, alreadyAnswered) {
+  return esc(text).replace(/\((\d+)\)\s*______/g, (match, id) => {
+    const q = questions.find(q => q.id === id);
+    if (!q) return match;
+    if (alreadyAnswered) {
+      return `<span class="gf-blank correct">${esc(q.answer)}</span>`;
+    }
+    const val = selected[id];
+    return val
+      ? `<span class="gf-blank filled" data-gap="${id}">${esc(val)}</span>`
+      : `<span class="gf-blank empty" data-gap="${id}">______</span>`;
+  });
+}
+
+function renderGF(ex) {
+  const alreadyAnswered = !!state.scored[state.exerciseIndex];
+  const instruction = ex.instruction[state.uiLang] || ex.instruction['pt-PT'];
+  const optionGroups = ex.questions.map(q => `
+    <div class="gf-group">
+      <span class="gf-label">${q.id}</span>
+      <div class="gf-chips">
+        ${q.options.map(o => `<button class="gf-chip" data-gap="${q.id}" data-val="${esc(o)}">${esc(o)}</button>`).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  return `
+    <p class="tut-instruction">${esc(instruction)}</p>
+    <div class="gf-text">${gfTextHtml(ex.text, ex.questions, {}, alreadyAnswered)}</div>
+    ${alreadyAnswered
+      ? `<button class="btn-continue" id="btn-continue">${esc(t('continue'))}</button>`
+      : `<div class="gf-groups">${optionGroups}</div>
+         <button class="btn-check" id="gf-check" disabled>${esc(t('check'))}</button>`
+    }
+  `;
+}
+
+function setupGF(ex, onAnswer) {
+  if (state.scored[state.exerciseIndex]) return;
+  const selected = {};
+  const checkBtn = document.getElementById('gf-check');
+
+  const updateBlank = (id, val) => {
+    const span = document.querySelector(`.gf-blank[data-gap="${id}"]`);
+    if (span) { span.textContent = val; span.className = 'gf-blank filled'; }
+  };
+
+  document.querySelectorAll('.gf-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const { gap, val } = chip.dataset;
+      document.querySelectorAll(`.gf-chip[data-gap="${gap}"]`).forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      selected[gap] = val;
+      updateBlank(gap, val);
+      checkBtn.disabled = !ex.questions.every(q => selected[q.id]);
+    });
+  });
+
+  checkBtn.addEventListener('click', () => {
+    const allCorrect = ex.questions.every(q => selected[q.id] === q.answer);
+    document.querySelectorAll('.gf-chip').forEach(chip => {
+      chip.disabled = true;
+      const q = ex.questions.find(q => q.id === chip.dataset.gap);
+      if (chip.dataset.val === q.answer)            chip.classList.add('correct');
+      else if (chip.classList.contains('selected')) chip.classList.add('wrong');
+    });
+    ex.questions.forEach(q => {
+      const span = document.querySelector(`.gf-blank[data-gap="${q.id}"]`);
+      if (span) {
+        span.textContent = selected[q.id] || q.answer;
+        span.className = `gf-blank ${selected[q.id] === q.answer ? 'correct' : 'wrong'}`;
+      }
+    });
+    checkBtn.disabled = true;
+    onAnswer(allCorrect, null);
   });
 }
 

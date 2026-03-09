@@ -90,6 +90,15 @@ const tf = (sentence, answer, text) => ({
   text,
 });
 
+const gf = (ptInstruction, idInstruction, text, questions) => ({
+  type: 'gap-fill',
+  instruction: { 'pt-PT': ptInstruction, 'id-ID': idInstruction },
+  text,       // passage containing (1) ______, (2) ______ etc.
+  questions,  // [{ id, options[3], answer }]
+  translation: {},
+  target: null,
+});
+
 // ── Levels ────────────────────────────────────────────────
 const LEVELS = {
   'pt-PT': [
@@ -382,6 +391,23 @@ const LESSONS = {
         ],
       };
     })(),
+    {
+      id: 'pt-grammar-fill', title: 'lessonGapFill', subtitle: 'lessonGapFillSub',
+      exercises: [
+        gf(
+          'Preenche cada espaço com a palavra correta do quadro abaixo.',
+          'Isi setiap titik-titik dengan kata yang tepat dari kotak di bawah.',
+          'Pedro Álvares Cabral foi escolhido para liderar uma grande expedição marítima. Os marinheiros aceitaram o desafio com entusiasmo: — Estamos prontos para partir. Vamos honrar o (1) ______ país com esta viagem. — Vamos preparar (2) ______ nau e seguimos logo de manhã... A viagem decorreu com tranquilidade, até que uma tempestade forte os afastou (3) ______ rota prevista. O medo apoderou-se da tripulação. Porém, Pedro, o mais determinado, conseguiu manter a ordem (4) ______, passado algum tempo (5) ______, os navegadores avistaram uma nova terra.',
+          [
+            { id: '1', options: ['teu', 'nosso', 'dele'],    answer: 'nosso' },
+            { id: '2', options: ['a', 'o', 'da'],            answer: 'a'     },
+            { id: '3', options: ['da', 'em', 'na'],          answer: 'da'    },
+            { id: '4', options: ['nem', 'e', 'ou'],          answer: 'e'     },
+            { id: '5', options: ['depois', 'já', 'antes'],   answer: 'depois'},
+          ]
+        ),
+      ],
+    },
     { id: 'pt-pronouns',     title: 'Pronomes',            subtitle: 'Eu, Tu, Ele…',                   locked: true, exercises: [] },
     { id: 'pt-adjectives',   title: 'Adjetivos',           subtitle: 'Grande, Pequeno, Bonito…',       locked: true, exercises: [] },
     { id: 'pt-animals',      title: 'Animais',             subtitle: 'Cão, Gato, Pássaro…',           locked: true, exercises: [] },

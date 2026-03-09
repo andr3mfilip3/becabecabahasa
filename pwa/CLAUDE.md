@@ -52,6 +52,20 @@ Also: `section-select` → `resources`
 
 Navigation via `navigate(screen, patch)` — resets `answered/isCorrect/correctAnswer`, stops speech recognition, calls `render()`.
 
+## Complete Screen (app.js — `renderComplete`)
+
+Button layout depends on score:
+
+**Perfect score (`state.score === total`):**
+1. Green "Voltar às Lições" / "Kembali ke Pelajaran" (`#btn-home` → `lesson-list`)
+2. Purple "Recursos" / "Sumber Daya" (`#btn-resources` → `resources`)
+
+**Missed any question (`state.score < total`):**
+1. Blue "Tentar Novamente" / "Coba Lagi" (`#btn-try-again` → restarts lesson: `navigate('lesson', { exerciseIndex:0, score:0, scored:[], usedAnswers:[] })`)
+2. Side-by-side row: green `#btn-home` + purple `#btn-resources`
+
+Resources button always opens `state.language`'s resources (language already set in state).
+
 ## Exercise Types & Builders (data.js)
 
 All builders produce objects consumed by `exercises.js`:
@@ -200,11 +214,11 @@ const LESSONS = {
 ## Current Content Status
 | Language | Level | Status |
 |---|---|---|
-| pt-PT | ACESSO (A1) | ✅ 11 lessons: greetings, numbers (0–20), colors, food, family, body, verbs, places, questions, word-matching, true-false |
+| pt-PT | ACESSO (A1) | ✅ 11 active lessons: greetings, numbers (0–20), colors, food, family, body, verbs, places, questions, word-matching, true-false + 7 locked: pronouns, adjectives, animals, prepositions, time, phrases, sentences |
 | pt-PT | CIPLE–DUPLE (A2–C2) | ❌ All empty |
-| id-ID | BIPA 1 (A1) | ✅ 8 lessons |
+| id-ID | BIPA 1 (A1) | ✅ 8 active lessons + 7 locked: pronouns, adjectives, animals, prepositions, time, phrases, sentences |
 | id-ID | BIPA 2–6 (A2–C2) | ⚠️ 1 lesson each |
-| fr-FR | DELF A1 | ✅ 8 lessons (mirrors PT-A1 topics) |
+| fr-FR | DELF A1 | ✅ 8 active lessons (mirrors PT-A1 topics) + 7 locked: pronouns, adjectives, animals, prepositions, time, phrases, sentences |
 | fr-FR | DELF A2–DALF C2 | ❌ All empty |
 
 ## i18n System (i18n.js)
@@ -218,6 +232,7 @@ const LESSONS = {
 - `tutExample` — "Exemplo" / "Contoh" (tutorial example label)
 - `trueLabel` — "Verdadeiro" / "Benar"
 - `falseLabel` — "Falso" / "Salah"
+- `tryAgain` — "Tentar Novamente" / "Coba Lagi" (complete screen retry button)
 
 **Rule:** All new i18n keys must be added to **both** `I18N['pt-PT']` and `I18N['id-ID']`.
 
@@ -228,7 +243,7 @@ Maps `ex.target` → image path. Shown on MC, TA, tutorial (`tut`), and word-mat
 
 **Image base URL:** `https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/` (Cloudflare R2). Images are no longer in the `pwa/images/` local folder.
 
-**Categories:** greetings, numbers (0–20 selected), question words, clothing (chinelos/cachecol/guarda-chuva/mochila/pasta/casaco), family, colors, body parts, food/drink, verbs, places.
+**Categories:** greetings, numbers (0–20 selected), question words, clothing (chinelos/cachecol/guarda-chuva/mochila/pasta/casaco), family, colors, body parts, food/drink, verbs (including tirar/usar/falar/Excusez-moi), places.
 
 **Special entry:** `'Uma manhã preguiçosa'` → `Wake up.png` — used by the `mcI` exercise in pt-true-false (target = correct option string).
 
@@ -272,6 +287,11 @@ Reference tables in the "Resources" section:
 - `.tf-question` — left-aligned, 1.1rem, font-weight 700 (TF question sentence)
 - `.btn-continue` — blue background by default; overridden green/red inside `.feedback-bar`
 - `.feedback-bar.correct/.wrong` — bottom bar with icon, label, continue button
+- `.btn-home` — green full-width button (complete screen back to lessons)
+- `.btn-try-again` — blue variant of `.btn-home` (complete screen retry)
+- `.btn-resources` — purple (#CE82FF) variant of `.btn-home` (complete screen resources)
+- `.complete-actions` — flex column wrapper for complete screen buttons (gap 8px, margin-top 12px)
+- `.complete-row` — flex row for side-by-side buttons (gap 8px, max-width 320px)
 
 ## Speech (speech.js)
 - `speak(text, lang)` — Web Speech API TTS at rate 0.85; iOS workaround with 100ms delay. **No audio files** — speech is synthesized at runtime by the browser/OS voice pack.

@@ -323,7 +323,7 @@ function buildFeedbackBar() {
         <span class="feedback-icon">${ok ? '✅' : '❌'}</span>
         <div>
           <div class="feedback-label">${esc(t(ok ? 'correct' : 'incorrect'))}</div>
-          ${!ok ? `<div class="feedback-answer">${esc(t('answer'))} ${esc(ans)}</div>` : ''}
+          ${!ok && ans ? `<div class="feedback-answer">${esc(t('answer'))} ${esc(ans)}</div>` : ''}
         </div>
       </div>
       <button class="btn-continue" id="btn-continue">${esc(t('continue'))}</button>
