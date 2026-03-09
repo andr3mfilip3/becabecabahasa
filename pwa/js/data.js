@@ -1111,6 +1111,9 @@ const IMAGE_MAP = {
   'pergi':   'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Go.png',      'ir':       'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Go.png',      'aller':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Go.png',
   'datang':  'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Come.png',    'vir':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Come.png',    'venir':    'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Come.png',
   'tinggal': 'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Live.png',    'morar':    'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Live.png',    'habiter':   'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Live.png',
+  'tirar':   'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/tirar.png',
+  'usar':    'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/usar.png',
+  'falar':   'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/falar.png',
   // Places
   'sekolah':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/school.png',    'escola':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/school.png',    'école':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/school.png',
   'pasar':       'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Market.png',    'mercado':    'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Market.png',    'marché':    'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Market.png',
