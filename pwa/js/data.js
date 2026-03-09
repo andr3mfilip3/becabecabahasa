@@ -1065,7 +1065,7 @@ const IMAGE_MAP = {
   'bermain': 'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Play.png',    'brincar':  'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Play.png',    'jouer':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Play.png',
   'membeli': 'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Buy.png',     'comprar':  'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Buy.png',     'acheter':   'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Buy.png',
   'pergi':   'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Go.png',      'ir':       'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Go.png',      'aller':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Go.png',
-  'datang':  'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Come.png',    'venir':    'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Come.png',
+  'datang':  'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Come.png',    'vir':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Come.png',    'venir':    'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Come.png',
   'tinggal': 'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Live.png',    'morar':    'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Live.png',    'habiter':   'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/Live.png',
   // Places
   'sekolah':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/school.png',    'escola':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/school.png',    'école':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/school.png',
@@ -1274,6 +1274,7 @@ const EXAMPLE_MAP = {
   'pergi':      'Saya pergi ke sekolah setiap pagi.',
   'tinggal':    'Saya tinggal di Jakarta bersama keluarga.',
   'datang':     'Dia datang ke pesta tepat waktu.',
+  'vir':        'Ela vem jantar em casa esta noite.',
   'manger':     'Je mange une pomme chaque matin.',
   'boire':      'Je bois du café avant de travailler.',
   'étudier':    "J'étudie le français à l'université.",
