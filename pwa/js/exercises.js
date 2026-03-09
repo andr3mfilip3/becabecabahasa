@@ -425,7 +425,7 @@ function gfTextHtml(text, questions, selected, alreadyAnswered) {
     const val = selected[id];
     return val
       ? `<span class="gf-blank filled" data-gap="${id}">${esc(val)}</span>`
-      : `<span class="gf-blank empty" data-gap="${id}">______</span>`;
+      : `<span class="gf-blank empty" data-gap="${id}">__(${id})__</span>`;
   });
 }
 

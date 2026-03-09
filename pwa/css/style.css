@@ -876,8 +876,8 @@ body {
 .gf-text {
   background: var(--gray-3);
   border-radius: var(--radius);
-  padding: 14px 16px;
-  font-size: .95rem;
+  padding: 10px 12px;
+  font-size: .9rem;
   line-height: 1.8;
   text-align: left;
   width: 100%;
@@ -902,7 +902,10 @@ body {
   flex-direction: column;
   gap: 10px;
   width: 100%;
+  margin-top: 10px;
 }
+
+#gf-check { margin-top: 10px; }
 
 .gf-group {
   display: flex;
