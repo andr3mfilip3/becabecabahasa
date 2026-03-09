@@ -277,13 +277,17 @@ function renderComplete() {
 
   const buttons = perfect
     ? `
-      <button class="btn-home" id="btn-home">${esc(t('backToLessons'))}</button>
-      <button class="btn-home btn-resources" id="btn-resources">${esc(t('resources'))}</button>`
-    : `
-      <button class="btn-home btn-try-again" id="btn-try-again">${esc(t('tryAgain'))}</button>
-      <div class="complete-row">
+      <div class="complete-actions">
         <button class="btn-home" id="btn-home">${esc(t('backToLessons'))}</button>
         <button class="btn-home btn-resources" id="btn-resources">${esc(t('resources'))}</button>
+      </div>`
+    : `
+      <div class="complete-actions">
+        <button class="btn-home btn-try-again" id="btn-try-again">${esc(t('tryAgain'))}</button>
+        <div class="complete-row">
+          <button class="btn-home" id="btn-home">${esc(t('backToLessons'))}</button>
+          <button class="btn-home btn-resources" id="btn-resources">${esc(t('resources'))}</button>
+        </div>
       </div>`;
 
   return `
