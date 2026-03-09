@@ -244,12 +244,13 @@ function renderLesson() {
   const lesson = LESSONS[state.language.id][state.level][state.lessonIndex];
   const ex     = lesson.exercises[state.exerciseIndex];
   const total  = lesson.exercises.length;
-  const pct    = Math.round((state.exerciseIndex / total) * 100);
 
   return `
     <div class="screen">
       <div class="lesson-topbar">
-        <button class="btn-back" id="btn-prev-exercise" ${state.exerciseIndex === 0 ? 'disabled' : ''}>‹</button>
+        ${state.exerciseIndex === 0
+          ? `<button class="btn-back" data-nav="lesson-list">‹</button>`
+          : `<button class="btn-back" id="btn-prev-exercise">‹</button>`}
         <div class="lesson-topbar-mid">
           <span class="lesson-pill">⭐ ${esc(t(lesson.title))}</span>
           <span class="lesson-counter">${esc(t('lessonWord'))} ${state.exerciseIndex + 1} / ${total}</span>
