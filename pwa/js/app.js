@@ -266,13 +266,25 @@ function renderLesson() {
 
 // ── Complete ──────────────────────────────────────────────
 function renderComplete() {
-  const total  = LESSONS[state.language.id][state.level][state.lessonIndex].exercises.length;
-  const pct    = Math.round((state.score / total) * 100);
-  const passed = pct >= 60;
-  const xp     = state.score * 10;
+  const total   = LESSONS[state.language.id][state.level][state.lessonIndex].exercises.length;
+  const pct     = Math.round((state.score / total) * 100);
+  const passed  = pct >= 60;
+  const perfect = state.score === total;
+  const xp      = state.score * 10;
   const r = 52, cx = 65, cy = 65;
   const circ   = 2 * Math.PI * r;
   const offset = circ - (pct / 100) * circ;
+
+  const buttons = perfect
+    ? `
+      <button class="btn-home" id="btn-home">${esc(t('backToLessons'))}</button>
+      <button class="btn-home btn-resources" id="btn-resources">${esc(t('resources'))}</button>`
+    : `
+      <button class="btn-home btn-try-again" id="btn-try-again">${esc(t('tryAgain'))}</button>
+      <div class="complete-row">
+        <button class="btn-home" id="btn-home">${esc(t('backToLessons'))}</button>
+        <button class="btn-home btn-resources" id="btn-resources">${esc(t('resources'))}</button>
+      </div>`;
 
   return `
     <div class="complete-screen">
@@ -292,7 +304,7 @@ function renderComplete() {
         <span class="score-pct" style="color:${passed ? '#58CC02' : '#FF9600'}">${pct}%</span>
       </div>
       <div class="xp-pill">⭐ +${xp} XP</div>
-      <button class="btn-home" id="btn-home">${esc(t('backToLessons'))}</button>
+      ${buttons}
     </div>
   `;
 }
@@ -409,6 +421,16 @@ function attachListeners() {
   // Back to lessons (complete screen)
   const homeBtn = document.getElementById('btn-home');
   if (homeBtn) homeBtn.addEventListener('click', () => navigate('lesson-list'));
+
+  // Try again (complete screen)
+  const tryAgainBtn = document.getElementById('btn-try-again');
+  if (tryAgainBtn) tryAgainBtn.addEventListener('click', () =>
+    navigate('lesson', { exerciseIndex: 0, score: 0, scored: [], usedAnswers: [] })
+  );
+
+  // Resources (complete screen)
+  const resourcesBtn = document.getElementById('btn-resources');
+  if (resourcesBtn) resourcesBtn.addEventListener('click', () => navigate('resources'));
 
   // Exercise interactions
   if (state.screen === 'lesson' && !state.answered) {

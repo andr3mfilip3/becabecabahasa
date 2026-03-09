@@ -845,3 +845,20 @@ body {
 }
 
 .btn-home:hover { background: var(--green-dark); }
+
+.btn-try-again { background: var(--blue); }
+.btn-try-again:hover { background: #1499d4; }
+
+.btn-resources { background: var(--purple); }
+.btn-resources:hover { background: #b86fe0; }
+
+.complete-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;
+}
+.complete-row .btn-home {
+  flex: 1;
+  max-width: none;
+}

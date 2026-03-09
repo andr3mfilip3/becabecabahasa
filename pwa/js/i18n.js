@@ -66,6 +66,7 @@ const I18N = {
     outOf:             'de',
     correctSuffix:     'corretas',
     backToLessons:     'Voltar às Lições',
+    tryAgain:          'Tentar Novamente',
 
     // Lesson titles
     lessonGreetings:      'Saudações',
@@ -161,6 +162,7 @@ const I18N = {
     outOf:             'dari',
     correctSuffix:     'benar',
     backToLessons:     'Kembali ke Pelajaran',
+    tryAgain:          'Coba Lagi',
 
     // Lesson titles
     lessonGreetings:      'Salam',
