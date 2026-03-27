@@ -1223,6 +1223,9 @@ const IMAGE_MAP = {
   'Istri':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/wife.png',    'Esposa':  'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/wife.png',    'Femme':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/wife.png',
   'Keluarga':  'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/family.png',  'Família': 'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/family.png',  'Famille':   'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/family.png',
   'Anak laki-laki': 'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/son.png', 'Filho': 'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/son.png',    'Fils':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/son.png',
+  'Bibi':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/aunt.png',   'Tia':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/aunt.png',   'Tante':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/aunt.png',
+  'Paman':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/uncle.png',  'Tio':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/uncle.png',  'Oncle':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/uncle.png',
+  'Sepupu':    'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/cousin.png', 'Primo':   'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/cousin.png', 'Cousin':    'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/cousin.png',
   // Colors
   'Merah':   'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/red.png',     'Vermelho': 'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/red.png',     'Rouge':  'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/red.png',
   'Biru':    'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/blue.png',    'Azul':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/blue.png',    'Bleu':   'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/blue.png',
@@ -1278,6 +1281,19 @@ const IMAGE_MAP = {
   'bandara':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/airport.png',   'aeroporto':  'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/airport.png',   'aéroport':    'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/airport.png',
   'teater':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/theater.png',   'teatro':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/theater.png',   'théâtre':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/theater.png',
   'rumah':       'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/House.png',     'casa':       'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/House.png',     'maison':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/House.png',
+  // Animals
+  'semut':       'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/ant.png',      'formiga':    'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/ant.png',      'fourmi':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/ant.png',
+  'burung':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/bird.png',     'pássaro':    'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/bird.png',     'oiseau':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/bird.png',
+  'kucing':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/cat.png',      'gato':       'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/cat.png',      'chat':        'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/cat.png',
+  'sapi':        'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/cow.png',      'vaca':       'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/cow.png',      'vache':       'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/cow.png',
+  'anjing':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/dog.png',      'cão':        'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/dog.png',      'chien':       'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/dog.png',
+  'bebek':       'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/duck.png',     'pato':       'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/duck.png',     'canard':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/duck.png',
+  'kambing':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/goat.png',     'cabra':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/goat.png',     'chèvre':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/goat.png',
+  'kuda':        'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/horse.png',    'cavalo':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/horse.png',    'cheval':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/horse.png',
+  'tikus':       'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/mouse.png',    'rato':       'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/mouse.png',    'souris':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/mouse.png',
+  'babi':        'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/pig.png',      'porco':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/pig.png',      'cochon':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/pig.png',
+  'kelinci':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/rabbit.png',   'coelho':     'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/rabbit.png',   'lapin':       'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/rabbit.png',
+  'kura-kura':   'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/turtle.png',   'tartaruga':  'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/turtle.png',   'tortue':      'https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/turtle.png',
 };
 
 // ── Example sentences ─────────────────────────────────────
