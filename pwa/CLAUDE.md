@@ -121,6 +121,14 @@ tf(sentence, answer, text)   // answer: 'true' | 'false'
 // Go-back: shows passage with correct answers filled green + Continue.
 gf(ptInstruction, idInstruction, text, questions)
 // questions: [{ id: '1', options: ['a','b','c'], answer: 'a' }, ...]
+
+// Dialogue Completion: bilingual instruction + context line + dialogue with blanks + shared option bank
+// dialogue: array of { speaker, text } | { speaker, exampleLabel, text } | { speaker, gapId }
+// options: [{ label:'A', text:'...' }, ...] — example options rendered with .used + disabled
+// answers: { '1': 'A', '2': 'C', ... } — maps gapId → option label
+// Tap blank to activate, tap option to fill. Auto-advances to next empty gap.
+// Scores all-or-nothing. Go-back: shows filled dialogue + Continue.
+dc(ptInstruction, idInstruction, context, dialogue, options, answers)
 ```
 
 **Correct answer logic (`getCorrectAnswer` in exercises.js):**
@@ -134,6 +142,8 @@ gf(ptInstruction, idInstruction, text, questions)
 - `tutorial-read` → always passes (direct `advanceExercise()`, no feedback bar)
 - `word-match` → `ex.answer`
 - `true-false` → `ex.answer` (`'true'` or `'false'`); correct label shown in feedback
+- `gap-fill` → all-or-nothing; passes `null` correctAnswer (no answer line in feedback bar)
+- `dialogue-completion` → all-or-nothing; passes `null` correctAnswer
 
 **`getQuestion` in exercises.js** — for `questionType: 'instruction'`, returns `ex.instruction[uiLang]` with pt-PT fallback. For `word`/`meaning`, uses i18n templates as before.
 
@@ -222,11 +232,11 @@ const LESSONS = {
 ## Current Content Status
 | Language | Level | Status |
 |---|---|---|
-| pt-PT | ACESSO (A1) | ✅ 12 active lessons: greetings, numbers (0–20), colors, food, family, body, verbs, places, questions, word-matching, true-false, grammar-fill + 7 locked: pronouns, adjectives, animals, prepositions, time, phrases, sentences |
+| pt-PT | ACESSO (A1) | ✅ 13 active lessons: greetings, numbers (0–20), colors, food, family, body, verbs, places, questions, word-matching, true-false, grammar-fill, animals + 6 locked: pronouns, adjectives, prepositions, time, phrases, sentences |
 | pt-PT | CIPLE–DUPLE (A2–C2) | ❌ All empty |
-| id-ID | BIPA 1 (A1) | ✅ 8 active lessons + 7 locked: pronouns, adjectives, animals, prepositions, time, phrases, sentences |
+| id-ID | BIPA 1 (A1) | ✅ 9 active lessons: greetings, numbers, colors, food, family, body, verbs, places, animals + 6 locked: pronouns, adjectives, prepositions, time, phrases, sentences |
 | id-ID | BIPA 2–6 (A2–C2) | ⚠️ 1 lesson each |
-| fr-FR | DELF A1 | ✅ 8 active lessons (mirrors PT-A1 topics) + 7 locked: pronouns, adjectives, animals, prepositions, time, phrases, sentences |
+| fr-FR | DELF A1 | ✅ 9 active lessons (mirrors PT-A1 topics incl. animals) + 6 locked: pronouns, adjectives, prepositions, time, phrases, sentences |
 | fr-FR | DELF A2–DALF C2 | ❌ All empty |
 
 ## i18n System (i18n.js)
@@ -251,7 +261,11 @@ Maps `ex.target` → image path. Shown on MC, TA, tutorial (`tut`), and word-mat
 
 **Image base URL:** `https://pub-1bc4ce0f925641ae898fdc545e16dddf.r2.dev/` (Cloudflare R2). Images are no longer in the `pwa/images/` local folder.
 
-**Categories:** greetings, numbers (0–20 selected), question words, clothing (chinelos/cachecol/guarda-chuva/mochila/pasta/casaco), family, colors, body parts, food/drink, verbs (including tirar/usar/falar/Excusez-moi), places.
+**Categories:** greetings, numbers (0–20 selected), question words, clothing (chinelos/cachecol/guarda-chuva/mochila/pasta/casaco), family (incl. aunt/uncle/cousin: bibi/tia/tante, paman/tio/oncle, sepupu/primo/cousin), colors, body parts, food/drink, verbs (including tirar/usar/falar/Excusez-moi), places, animals (ant/bird/cat/cow/dog/duck/goat/horse/mouse/pig/rabbit/turtle across PT/ID/FR).
+
+**Case-sensitivity note:** Animals lesson targets are lowercase (`cão`, `gato`, etc.); food lesson targets are uppercase (`Ayam`, `Peixe`, etc.). These are separate IMAGE_MAP keys. Overlap words (chicken: `galinha`/`ayam`/`poulet`; fish: `peixe`/`ikan`/`poisson`) need lowercase entries for animals lessons.
+
+**Pending IMAGE_MAP gaps:** `galinha`, `ayam` (lowercase), `poulet` → `chicken.png` (image exists, aliases needed); `ovelha`, `domba`, `mouton` → `sheep.png` (image needs to be uploaded to R2).
 
 **Special entry:** `'Uma manhã preguiçosa'` → `Wake up.png` — used by the `mcI` exercise in pt-true-false (target = correct option string).
 
@@ -306,6 +320,14 @@ Reference tables in the "Resources" section:
 - `.gf-group` — one row: `.gf-label` (blue circle) + `.gf-chips` (flex row of pill buttons)
 - `.gf-chip` / `.gf-chip.selected/.correct/.wrong` — selectable pill option buttons
 - `#gf-check` — check button (margin-top 10px); disabled until all gaps filled
+- `.dc-context` — grey instruction/context line above dialogue
+- `.dc-dialogue` — flex column of dialogue lines
+- `.dc-line` / `.dc-line.dc-example` — one line; example lines have blue-light bg
+- `.dc-speaker` — bold speaker label
+- `.dc-text` — speaker's text; `.dc-badge` — example option label pill; `.dc-blank` — tappable blank (active state: blue border)
+- `.dc-options` — 2-column grid of option buttons
+- `.dc-option` — option button; `.dc-opt-label` (circle) + `.dc-opt-text`
+- `#dc-check` — check button; disabled until all gaps filled
 
 ## Speech (speech.js)
 - `speak(text, lang)` — Web Speech API TTS at rate 0.85; iOS workaround with 100ms delay. **No audio files** — speech is synthesized at runtime by the browser/OS voice pack.
