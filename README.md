@@ -109,4 +109,6 @@ Any new UI text must be added to **both** `pt-PT` and `id-ID` in `pwa/js/i18n.js
 
 ## License
 
-All rights reserved. See [LICENSE](LICENSE) if one has been added.
+The source code is licensed under the [MIT License](LICENSE).
+
+Images used in the app are not part of this repository and are not covered by this license.
