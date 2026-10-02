@@ -27,6 +27,29 @@ The interface is available in **Portuguese** and **Indonesian**, so Portuguese s
 - **Installable**: add it to your phone's home screen like a native app
 - **No accounts, no tracking**: only your UI language preference is stored, in your browser
 
+## Screenshots
+
+<div align="center">
+<table align="center">
+  <tr>
+    <td align="center"><img src="images/pt_lesson_types.PNG" width="250" alt="Indonesian BIPA 1 lessons, Portuguese interface"></td>
+    <td align="center"><img src="images/multiple_choice.PNG" width="250" alt="Multiple choice exercise"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Indonesian lessons (BIPA 1), Portuguese interface</sub></td>
+    <td align="center"><sub>Multiple choice</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="images/typing.PNG" width="250" alt="Typing exercise"></td>
+    <td align="center"><img src="images/results.PNG" width="250" alt="Lesson results screen"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Typing the answer</sub></td>
+    <td align="center"><sub>Lesson results</sub></td>
+  </tr>
+</table>
+</div>
+
 ## Tech stack
 
 - Vanilla JavaScript, HTML and CSS: no frameworks, no bundler
@@ -39,6 +62,7 @@ The interface is available in **Portuguese** and **Indonesian**, so Portuguese s
 ```
 .
 ├── build.js            # Deploy step: stamps the Service Worker cache version
+├── images/             # Screenshots shown in this README
 └── pwa/                # The app (served as-is)
     ├── index.html
     ├── manifest.json
@@ -111,4 +135,4 @@ Any new UI text must be added to **both** `pt-PT` and `id-ID` in `pwa/js/i18n.js
 
 The source code is licensed under the [MIT License](LICENSE).
 
-Images used in the app are not part of this repository and are not covered by this license.
+Images used in the app are not part of this repository and are not covered by this license. This includes the illustrations visible in the screenshots in `images/`.
