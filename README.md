@@ -2,6 +2,8 @@
 
 A lightweight, offline-capable Progressive Web App for learning **Portuguese (pt-PT)**, **Indonesian** and **French** through short, interactive exercises.
 
+**Try it live: [becabecabahasa.com](https://becabecabahasa.com/)**
+
 The interface is available in **Portuguese** and **Indonesian**, so Portuguese speakers can learn Indonesian (and French), Indonesian speakers can learn Portuguese (and French), and so on.
 
 > *Beca* + *Bahasa*: "language" in Indonesian.
